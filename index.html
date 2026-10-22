@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Alfabetización Digital – Recursos Educativos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background-color: #f0f4f8; line-height: 1.6; }
+
+        /* PORTADA PRINCIPAL */
+        header { background-color: #004d40; color: white; padding: 2.5rem; text-align: center; }
+        .logo { height: 90px; margin-bottom: 1.2rem; }
+        #titulo_proyecto { font-size: 2rem; margin-bottom: 0.5rem; color: #ffdd55; }
+        #descripcion_general { font-size: 1.3rem; margin-bottom: 1.5rem; color: #ffffff; }
+        .resumen_resultados { max-width: 900px; margin: 2rem auto; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: left; }
+        .resumen_resultados h3 { color: #ffdd55; margin-bottom: 0.8rem; }
+
+        /* BOTONES DE ACCESO */
+        .acceso_secciones { max-width: 900px; margin: 3rem auto; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+        .boton_acceso { flex: 1 1 300px; text-align: center; }
+        .boton_acceso a { display: block; padding: 2rem; background: white; border-radius: 10px; text-decoration: none; color: inherit; box-shadow: 0 3px 8px rgba(0,0,0,0.15); transition: all 0.3s; }
+        .boton_acceso a:hover { transform: translateY(-5px); box-shadow: 0 5px 12px rgba(0,0,0,0.2); }
+        .boton_acceso img { height: 70px; margin-bottom: 1rem; object-fit: contain; }
+        .boton_acceso h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .boton_acceso#estudiantes h2 { color: #2e7d32; }
+        .boton_acceso#docentes h2 { color: #1565c0; }
+        .boton_acceso p { color: #555; font-size: 1rem; }
+
+        /* SECCIONES */
+        .contenido { max-width: 1200px; margin: 3rem auto; padding: 0 1rem; display: none; }
+        .contenido:target { display: block; }
+        .volver { display: inline-block; margin-bottom: 1.5rem; padding: 0.6rem 1.2rem; background: #004d40; color: white; border-radius: 6px; text-decoration: none; font-weight: bold; transition: 0.3s; }
+        .volver:hover { background: #00332c; }
+        .contenido h1 { text-align: center; margin-bottom: 2rem; padding-bottom: 0.5rem; border-bottom: 2px solid; }
+        #seccion_estudiantes h1 { color: #2e7d32; border-color: #2e7d32; }
+        #seccion_docentes h1 { color: #1565c0; border-color: #1565c0; }
+
+        .area_mejora { background: #fff3cd; border-left: 5px solid #ffc107; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0 6px 6px 0; }
+        .area_mejora h3 { color: #856404; margin-bottom: 0.5rem; }
+        .area_mejora p { color: #664d03; }
+
+        .recuadro { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .recuadro h2 { margin-bottom: 1rem; border-left: 4px solid; padding-left: 0.5rem; }
+        #seccion_estudiantes .recuadro h2 { color: #388e3c; border-color: #388e3c; }
+        #seccion_docentes .recuadro h2 { color: #1976d2; border-color: #1976d2; }
+
+        .enlaces { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .enlace { flex: 1 1 200px; text-align: center; }
+        .enlace a { display: block; text-decoration: none; color: inherit; padding: 1rem; border: 1px solid #ddd; border-radius: 6px; transition: all 0.3s; }
+        .enlace a:hover { transform: translateY(-3px); }
+        #seccion_estudiantes .enlace a:hover { background: #e8f5e9; border-color: #388e3c; }
+        #seccion_docentes .enlace a:hover { background: #e3f2fd; border-color: #1976d2; }
+        .enlace img { height: 55px; margin-bottom: 0.5rem; object-fit: contain; }
+        .enlace h3 { font-size: 1rem; color: #333; }
+    </style>
+</head>
+<body>
+
+    <!-- 🎯 PORTADA PRINCIPAL -->
+    <header id="inicio">
+        <img src="imagenes/logo_unl.jpg" class="logo" alt="Logotipo Universidad Nacional de Loja">
+        <h1 id="titulo_proyecto">FORTALECIMIENTO DE LA ALFABETIZACIÓN DIGITAL</h1>
+        <h2 id="descripcion_general">Recursos educativos adaptados a las necesidades de docentes y estudiantes</h2>
+        
+        <div class="resumen_resultados">
+            <h3>📋 Necesidades identificadas en la evaluación</h3>
+            <p><strong>Estudiantes:</strong> Se requiere fortalecer la alfabetización en información y datos, así como la creación de contenido digital (nivel bajo). Se refuerza la resolución de problemas (nivel medio).</p>
+            <p><strong>Docentes:</strong> Se debe trabajar especialmente en estrategias de evaluación con TIC y empoderamiento del estudiante (nivel bajo), además de mejorar la enseñanza digital y el desarrollo de competencias en los alumnos (nivel medio).</p>
+        </div>
+    </header>
+
+    <!-- 📌 ACCESO A SECCIONES -->
+    <div class="acceso_secciones">
+        <div class="boton_acceso" id="estudiantes">
+            <a href="#seccion_estudiantes">
+                <img src="imagenes/icono_guia.png" alt="Ícono para estudiantes">
+                <h2>Recursos para Estudiantes</h2>
+                <p>Materiales adaptados a tus necesidades de aprendizaje</p>
+            </a>
+        </div>
+        <div class="boton_acceso" id="docentes">
+            <a href="#seccion_docentes">
+                <img src="imagenes/icono_libro.png" alt="Ícono para docentes">
+                <h2>Recursos para Docentes</h2>
+                <p>Herramientas para tus clases y mejora profesional</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- 📚 SECCIÓN PARA ESTUDIANTES -->
+    <div class="contenido" id="seccion_estudiantes">
+        <a href="#inicio" class="volver">← Volver al inicio</a>
+        <h1>MATERIALES PARA ESTUDIANTES</h1>
+
+        <div class="area_mejora">
+            <h3>🎯 Áreas prioritarias para mejorar</h3>
+            <p>Se han preparado recursos especiales para que avances en: <strong>Alfabetización en información y datos</strong> y <strong>Creación de contenido digital</strong>, además de reforzar la resolución de problemas tecnológicos.</p>
+        </div>
+
+        <div class="recuadro">
+            <h2>Guías de estudio y textos base</h2>
+            <div class="enlaces">
+                <div class="enlace">
+                    <a href="[ENLACE_GUIA_INFO_DATOS]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_guia.png" alt="Ícono de guía">
+                        <h3>Guía: Buscar y usar información</h3>
+                    </a>
+                </div>
+                <div class="enlace">
+                    <a href="[ENLACE_TEXTO_CREACION_CONTENIDO]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_libro.png" alt="Ícono de texto">
+                        <h3>Texto: Crear trabajos digitales</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="recuadro">
+            <h2>Videos educativos y audios explicativos</h2>
+            <div class="enlaces">
+                <div class="enlace">
+                    <a href="[ENLACE_VIDEO_BUSQUEDA]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_silabo.png" alt="Ícono de video">
+                        <h3>Video: Cómo buscar información segura</h3>
+                    </a>
+                </div>
+                <div class="enlace">
+                    <a href="[ENLACE_AUDIO_CREACION]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_silabo.png" alt="Ícono de audio">
+                        <h3>Audio: Pasos para hacer una presentación</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="recuadro">
+            <h2>Clases prácticas y ejercicios</h2>
+            <div class="enlaces">
+                <div class="enlace">
+                    <a href="[ENLACE_CLASE_INFORMACION]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_guia.png" alt="Ícono de clase">
+                        <h3>Clase: Analizar datos y noticias</h3>
+                    </a>
+                </div>
+                <div class="enlace">
+                    <a href="[ENLACE_EJERCICIOS_PROBLEMAS]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_silabo.png" alt="Ícono de ejercicios">
+                        <h3>Ejercicios: Resolver fallas sencillas</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📚 SECCIÓN PARA DOCENTES -->
+    <div class="contenido" id="seccion_docentes">
+        <a href="#inicio" class="volver">← Volver al inicio</a>
+        <h1>MATERIALES PARA DOCENTES</h1>
+
+        <div class="area_mejora">
+            <h3>🎯 Áreas prioritarias para tus clases</h3>
+            <p>Recursos diseñados para fortalecer: <strong>Evaluación con TIC</strong> y <strong>Empoderamiento del estudiante</strong> (nivel bajo), además de mejorar la enseñanza digital y el desarrollo de competencias en tus alumnos (nivel medio).</p>
+        </div>
+
+        <div class="recuadro">
+            <h2>Guías de estudio y textos base</h2>
+            <div class="enlaces">
+                <div class="enlace">
+                    <a href="[ENLACE_GUIA_EVALUACION_TIC]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_guia.png" alt="Ícono de guía">
+                        <h3>Guía: Evaluar aprendizajes con herramientas digitales</h3>
+                    </a>
+                </div>
+                <div class="enlace">
+                    <a href="[ENLACE_TEXTO_EMPODERAMIENTO]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_libro.png" alt="Ícono de texto">
+                        <h3>Texto: Protagonismo del estudiante en el aula</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="recuadro">
+            <h2>Videos educativos y audios explicativos</h2>
+            <div class="enlaces">
+                <div class="enlace">
+                    <a href="[ENLACE_VIDEO_RUBRICAS_DIGITALES]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_silabo.png" alt="Ícono de video">
+                        <h3>Video: Crear rúbricas y evaluar en línea</h3>
+                    </a>
+                </div>
+                <div class="enlace">
+                    <a href="[ENLACE_AUDIO_METODOLOGIAS_ACTIVAS]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_silabo.png" alt="Ícono de audio">
+                        <h3>Audio: Estrategias para que los alumnos participen</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="recuadro">
+            <h2>Clases prácticas y herramientas para tus sesiones</h2>
+            <div class="enlaces">
+                <div class="enlace">
+                    <a href="[ENLACE_CLASE_DESARROLLO_COMPETENCIAS]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_guia.png" alt="Ícono de clase">
+                        <h3>Clase: Enseñar competencias digitales paso a paso</h3>
+                    </a>
+                </div>
+                <div class="enlace">
+                    <a href="[ENLACE_RECURSOS_CLASES]" target="_blank" rel="noopener noreferrer">
+                        <img src="imagenes/icono_silabo.png" alt="Ícono de recursos">
+                        <h3>Materiales listos para usar en tus clases</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
