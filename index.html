@@ -25,7 +25,7 @@
     </script>
 
     <style>
-        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        .fade-in { animation: fadeIn 0.35s ease-in-out; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -72,18 +72,18 @@
 
                 <div>
                     <button type="submit" onclick="loginUsuario()"
-                        class="w-full bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-3 rounded-lg shadow-md transition flex items-center justify-center gap-2">
+                        class="w-full bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-3 rounded-lg shadow-md transition flex items-center justify-center gap-2 text-base">
                         <i class="fa-solid fa-right-to-bracket"></i>
                         <span>Ingresar a la Plataforma</span>
                     </button>
                 </div>
 
-                <div class="flex items-center justify-between text-xs text-gray-500 pt-2 border-t">
-                    <button type="button" onclick="registrarUsuario()" class="text-unlGreen hover:underline font-semibold">
-                        Crear Cuenta Nueva
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500 pt-3 border-t">
+                    <button type="button" onclick="ingresarAlumnoDemo()" class="text-emerald-700 hover:underline font-bold">
+                        👨‍🎓 Entrar directo como Alumno
                     </button>
-                    <button type="button" onclick="ingresarAdminDemo()" class="text-blue-600 hover:underline font-bold">
-                        ⚙️ Entregar como Administrador
+                    <button type="button" onclick="ingresarAdminDemo()" class="text-blue-700 hover:underline font-bold">
+                        ⚙️ Entrar como Administrador
                     </button>
                 </div>
             </form>
@@ -94,20 +94,20 @@
     <div id="app-container" class="hidden flex-1 flex-col fade-in">
 
         <!-- BARRA SUPERIOR -->
-        <nav class="bg-unlGreenDark text-white px-6 py-3 flex justify-between items-center shadow-md">
+        <nav class="bg-unlGreenDark text-white px-4 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-2 shadow-md">
             <div class="flex items-center space-x-3">
                 <i class="fa-solid fa-book-open-reader text-unlGold text-xl"></i>
                 <span class="font-bold text-sm md:text-base">Portal Inclusivo - Ecuador Digital</span>
             </div>
-            <div class="flex items-center space-x-3 text-xs md:text-sm">
-                <span id="user-display" class="bg-white/10 px-3 py-1 rounded-full text-emerald-200">
+            <div class="flex items-center space-x-2 sm:space-x-3 text-xs md:text-sm">
+                <span id="user-display" class="bg-white/10 px-3 py-1.5 rounded-full text-emerald-200 hidden sm:inline-block">
                     <i class="fa-solid fa-user-check mr-1"></i> <span id="user-email-text"></span>
                 </span>
                 <!-- Botón visible solo para administradores -->
-                <button id="btn-admin-panel" onclick="toggleAdminPanel()" class="hidden bg-unlGold text-unlGreenDark px-3 py-1.5 rounded-lg font-bold transition shadow hover:bg-yellow-400">
-                    <i class="fa-solid fa-gear"></i> Panel Admin
+                <button id="btn-admin-panel" onclick="toggleAdminPanel()" class="hidden bg-unlGold text-unlGreenDark px-3 py-1.5 rounded-lg font-bold transition shadow hover:bg-yellow-400 flex items-center gap-1">
+                    <i class="fa-solid fa-plus-circle"></i> Subir Material
                 </button>
-                <button onclick="cerrarSesion()" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg font-medium transition shadow">
+                <button onclick="cerrarSesion()" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg font-medium transition shadow flex items-center gap-1">
                     <i class="fa-solid fa-power-off"></i> Salir
                 </button>
             </div>
@@ -119,114 +119,117 @@
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-unlGold mb-2">
                     APRENDIZAJE DIGITAL SIN BARRERAS
                 </h1>
-                <p class="text-sm sm:text-base text-slate-100 max-w-2xl mx-auto mb-4">
-                    Herramientas sencillas, videos y guías paso a paso diseñadas especialmente para aprender desde cero.
+                <p class="text-sm sm:text-base text-slate-100 max-w-2xl mx-auto mb-5">
+                    Haz clic en cualquier tarjeta para ver el video o leer la guía directamente aquí, sin salir de la página.
                 </p>
                 
-                <!-- Buscador rápido de recursos -->
-                <div class="max-w-md mx-auto relative">
-                    <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400"></i>
-                    <input type="text" id="input-buscador" oninput="filtrarRecursos()" placeholder="¿Qué deseas aprender hoy? (Ej. WhatsApp, Correo, Tareas...)" 
-                           class="w-full pl-11 pr-4 py-3 rounded-full text-gray-800 text-sm focus:outline-none shadow-lg">
+                <!-- Buscador rápido -->
+                <div class="max-w-lg mx-auto relative">
+                    <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400 text-lg"></i>
+                    <input type="text" id="input-buscador" oninput="filtrarRecursos()" placeholder="Escribe lo que buscas (Ej: YouTube, Correo, Rúbricas...)" 
+                           class="w-full pl-12 pr-4 py-3 rounded-full text-gray-800 text-sm sm:text-base focus:outline-none shadow-lg">
                 </div>
             </div>
         </header>
 
-        <!-- 🛠️ PANEL DE ADMINISTRACIÓN (OCULTO POR DEFECTO) -->
-        <div id="admin-panel" class="hidden bg-amber-50 border-b-4 border-unlGold p-6 shadow-inner">
+        <!-- 🛠️ PANEL DE ADMINISTRACIÓN -->
+        <div id="admin-panel" class="hidden bg-amber-50 border-b-4 border-unlGold p-4 sm:p-6 shadow-inner fade-in">
             <div class="max-w-4xl mx-auto bg-white rounded-xl p-6 shadow-md border border-amber-200">
                 <div class="flex justify-between items-center mb-4 border-b pb-3">
                     <h2 class="text-lg font-bold text-amber-800 flex items-center gap-2">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Panel de Administración: Subir Nuevo Material
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Agregar Nuevo Material Embebido
                     </h2>
-                    <button onclick="toggleAdminPanel()" class="text-gray-500 hover:text-red-600 font-bold text-lg">&times;</button>
+                    <button onclick="toggleAdminPanel()" class="text-gray-500 hover:text-red-600 font-bold text-2xl leading-none">&times;</button>
                 </div>
                 
-                <form id="form-subir-recurso" onsubmit="agregarRecursosPersonalizados(event)" class="grid sm:grid-cols-2 gap-4 text-sm">
+                <form id="form-subir-recurso" onsubmit="agregarRecurso(event)" class="grid sm:grid-cols-2 gap-4 text-sm">
                     <div>
-                        <label class="block font-semibold text-gray-700 mb-1">Título del Recurso</label>
-                        <input type="text" id="admin-titulo" placeholder="Ej: Cómo usar Zoom desde el celular" required class="w-full p-2.5 border rounded-lg">
+                        <label class="block font-semibold text-gray-700 mb-1">Título del Material</label>
+                        <input type="text" id="admin-titulo" placeholder="Ej: Cómo crear una cuenta de Gmail" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
                     </div>
                     <div>
-                        <label class="block font-semibold text-gray-700 mb-1">Categoría Destinada</label>
-                        <select id="admin-categoria" class="w-full p-2.5 border rounded-lg">
-                            <option value="estudiantes">Estudiantes (Alfabetización básica / Tareas)</option>
-                            <option value="docentes">Docentes (Evaluación TIC / Metodologías)</option>
+                        <label class="block font-semibold text-gray-700 mb-1">Dirigido a</label>
+                        <select id="admin-categoria" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
+                            <option value="estudiantes">Estudiantes y Ciudadanos</option>
+                            <option value="docentes">Docentes y Facilitadores</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block font-semibold text-gray-700 mb-1">Tipo de Formato</label>
-                        <select id="admin-tipo" class="w-full p-2.5 border rounded-lg">
-                            <option value="pdf">Documento Guía (PDF / Texto)</option>
-                            <option value="video">Video Explicativo</option>
-                            <option value="audio">Audio / Podcast</option>
-                            <option value="interactivo">Práctica Interactiva</option>
+                        <label class="block font-semibold text-gray-700 mb-1">Tipo de Material</label>
+                        <select id="admin-tipo" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
+                            <option value="video">Video (YouTube / Vimeo / MP4)</option>
+                            <option value="pdf">Documento / Guía (Google Drive / PDF)</option>
+                            <option value="audio">Audio Explicativo (MP3 / Drive)</option>
+                            <option value="web">Presentación o Página Interactiva (Genially / Canva / Web)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block font-semibold text-gray-700 mb-1">Enlace o Archivo (URL)</label>
-                        <input type="url" id="admin-url" placeholder="https://tu-enlace.com/archivo.pdf" required class="w-full p-2.5 border rounded-lg">
+                        <label class="block font-semibold text-gray-700 mb-1">Enlace (URL de YouTube, Google Drive, etc.)</label>
+                        <input type="url" id="admin-url" placeholder="Pega aquí el enlace normal..." required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
                     </div>
                     <div class="sm:col-span-2">
-                        <label class="block font-semibold text-gray-700 mb-1">Breve Descripción para personas sin experiencia</label>
-                        <input type="text" id="admin-desc" placeholder="Explicación corta de 1 sola línea" required class="w-full p-2.5 border rounded-lg">
+                        <label class="block font-semibold text-gray-700 mb-1">Explicación Sencilla (¿Qué aprenderán?)</label>
+                        <input type="text" id="admin-desc" placeholder="Ej: Video corto paso a paso para aprender a enviar correos desde el teléfono." required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
+                    </div>
+                    <div class="sm:col-span-2 bg-blue-50 p-3 rounded-lg text-xs text-blue-800">
+                        <i class="fa-solid fa-circle-info mr-1"></i> <strong>Tip:</strong> Puedes pegar enlaces normales de YouTube (<code>youtube.com/watch?v=...</code>) o enlaces compartidos de Google Drive; el sistema los adaptará automáticamente para verse dentro de la página.
                     </div>
                     <div class="sm:col-span-2">
-                        <button type="submit" class="w-full bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-2.5 rounded-lg shadow">
-                            Guardar y Publicar Recurso Inmediatamente
+                        <button type="submit" class="w-full bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-3 rounded-lg shadow text-base transition">
+                            Publicar Material en la Plataforma
                         </button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- SELECCIÓN DE PERFIL -->
-        <section class="max-w-5xl mx-auto px-4 py-8 w-full">
-            <h3 class="text-center font-bold text-xl text-gray-700 mb-6">Selecciona una categoría para comenzar:</h3>
+        <!-- SELECCIÓN DE PERFIL (INICIO) -->
+        <section id="pantalla-inicio" class="max-w-5xl mx-auto px-4 py-8 w-full">
+            <h3 class="text-center font-bold text-xl text-gray-700 mb-6">¿Qué materiales deseas explorar hoy?</h3>
             <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                <div class="bg-white rounded-2xl p-6 text-center border-2 border-emerald-500/20 shadow-md card-hover cursor-pointer" onclick="mostrarSeccion('seccion_estudiantes')">
-                    <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <div class="bg-white rounded-2xl p-6 text-center border-2 border-emerald-500/30 shadow-md card-hover cursor-pointer transition" onclick="mostrarSeccion('seccion_estudiantes')">
+                    <div class="w-20 h-20 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
                         <i class="fa-solid fa-user-graduate"></i>
                     </div>
-                    <h2 class="text-xl font-bold text-unlStudent mb-2">Para Estudiantes y Ciudadanos</h2>
-                    <p class="text-gray-600 text-sm mb-4">Aprende desde cero a buscar información, usar internet y enviar tareas.</p>
-                    <span class="inline-block bg-unlStudent text-white font-bold py-2 px-4 rounded-xl text-sm shadow">Ver Materiales</span>
+                    <h2 class="text-2xl font-bold text-unlStudent mb-2">Para Estudiantes y Ciudadanos</h2>
+                    <p class="text-gray-600 text-sm mb-5">Aprende desde cero a usar internet, buscar información segura y manejar herramientas digitales.</p>
+                    <span class="inline-block bg-unlStudent text-white font-bold py-2.5 px-6 rounded-xl text-base shadow">Entrar Aquí</span>
                 </div>
 
-                <div class="bg-white rounded-2xl p-6 text-center border-2 border-blue-500/20 shadow-md card-hover cursor-pointer" onclick="mostrarSeccion('seccion_docentes')">
-                    <div class="w-16 h-16 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <div class="bg-white rounded-2xl p-6 text-center border-2 border-blue-500/30 shadow-md card-hover cursor-pointer transition" onclick="mostrarSeccion('seccion_docentes')">
+                    <div class="w-20 h-20 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
                         <i class="fa-solid fa-chalkboard-teacher"></i>
                     </div>
-                    <h2 class="text-xl font-bold text-unlTeacher mb-2">Para Docentes y Facilitadores</h2>
-                    <p class="text-gray-600 text-sm mb-4">Estrategias de evaluación digital, rúbricas y clases interactivas.</p>
-                    <span class="inline-block bg-unlTeacher text-white font-bold py-2 px-4 rounded-xl text-sm shadow">Ver Materiales</span>
+                    <h2 class="text-2xl font-bold text-unlTeacher mb-2">Para Docentes y Facilitadores</h2>
+                    <p class="text-gray-600 text-sm mb-5">Estrategias de evaluación digital, diseño de rúbricas y recursos pedagógicos interactivos.</p>
+                    <span class="inline-block bg-unlTeacher text-white font-bold py-2.5 px-6 rounded-xl text-base shadow">Entrar Aquí</span>
                 </div>
             </div>
         </section>
 
         <!-- SECCIÓN ESTUDIANTES -->
-        <section id="seccion_estudiantes" class="contenido max-w-5xl mx-auto px-4 py-6 hidden w-full">
-            <div class="flex items-center justify-between mb-6 border-b pb-3">
-                <button onclick="volverInicio()" class="bg-unlGreen text-white px-4 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> Volver
+        <section id="seccion_estudiantes" class="contenido max-w-5xl mx-auto px-4 py-6 hidden w-full fade-in">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6 border-b pb-4">
+                <button onclick="volverInicio()" class="bg-unlGreen hover:bg-unlGreenDark text-white px-5 py-2.5 rounded-xl font-bold text-base shadow flex items-center gap-2 transition">
+                    <i class="fa-solid fa-arrow-left"></i> Volver al Inicio
                 </button>
-                <h1 class="text-xl sm:text-2xl font-extrabold text-unlStudent">RECURSOS PARA ESTUDIANTES</h1>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-unlStudent">MATERIALES PARA ESTUDIANTES</h1>
             </div>
-            <div id="contenedor-estudiantes" class="grid sm:grid-cols-2 gap-4">
-                <!-- Inyectado dinámicamente -->
+            <div id="contenedor-estudiantes" class="grid sm:grid-cols-2 gap-5">
+                <!-- Tarjetas generadas por JS -->
             </div>
         </section>
 
         <!-- SECCIÓN DOCENTES -->
-        <section id="seccion_docentes" class="contenido max-w-5xl mx-auto px-4 py-6 hidden w-full">
-            <div class="flex items-center justify-between mb-6 border-b pb-3">
-                <button onclick="volverInicio()" class="bg-unlGreen text-white px-4 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> Volver
+        <section id="seccion_docentes" class="contenido max-w-5xl mx-auto px-4 py-6 hidden w-full fade-in">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6 border-b pb-4">
+                <button onclick="volverInicio()" class="bg-unlGreen hover:bg-unlGreenDark text-white px-5 py-2.5 rounded-xl font-bold text-base shadow flex items-center gap-2 transition">
+                    <i class="fa-solid fa-arrow-left"></i> Volver al Inicio
                 </button>
-                <h1 class="text-xl sm:text-2xl font-extrabold text-unlTeacher">RECURSOS PARA DOCENTES</h1>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-unlTeacher">MATERIALES PARA DOCENTES</h1>
             </div>
-            <div id="contenedor-docentes" class="grid sm:grid-cols-2 gap-4">
-                <!-- Inyectado dinámicamente -->
+            <div id="contenedor-docentes" class="grid sm:grid-cols-2 gap-5">
+                <!-- Tarjetas generadas por JS -->
             </div>
         </section>
 
@@ -236,52 +239,106 @@
         </footer>
     </div>
 
-    <!-- VISOR MODAL DE RECURSOS -->
-    <div id="modal-visor" class="fixed inset-0 bg-black/70 hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col">
-            <div class="bg-unlGreen text-white px-5 py-3 flex justify-between items-center">
-                <h3 id="modal-titulo" class="font-bold text-base">Detalle del Recurso</h3>
-                <button onclick="cerrarVisor()" class="text-white hover:text-unlGold text-2xl font-bold">&times;</button>
+    <!-- 📺 VISOR MODAL EMBEBIDO DE PANTALLA AMPLIA -->
+    <div id="modal-visor" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-2 sm:p-4 z-50 fade-in">
+        <div class="bg-white rounded-2xl w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+            <!-- Cabecera del Visor -->
+            <div class="bg-unlGreen text-white px-5 py-3.5 flex justify-between items-center">
+                <div class="flex items-center gap-2 overflow-hidden">
+                    <i id="modal-icono" class="fa-solid fa-play-circle text-unlGold text-xl"></i>
+                    <h3 id="modal-titulo" class="font-bold text-base sm:text-lg truncate">Título del Material</h3>
+                </div>
+                <button onclick="cerrarVisor()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg font-bold text-sm flex items-center gap-1 transition">
+                    <span>Cerrar</span> <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-            <div class="p-6 text-center" id="modal-contenido"></div>
-            <div class="bg-gray-100 px-5 py-3 text-right border-t">
-                <button onclick="cerrarVisor()" class="bg-gray-600 text-white px-4 py-2 rounded-lg font-bold text-sm">Cerrar Ventana</button>
+            
+            <!-- Descripción breve -->
+            <div id="modal-descripcion" class="bg-slate-100 px-5 py-2.5 text-xs sm:text-sm text-gray-700 border-b"></div>
+
+            <!-- Contenedor del Iframe / Reproductor Embebido -->
+            <div class="flex-1 bg-gray-900 flex items-center justify-center overflow-hidden relative min-h-[320px] sm:min-h-[480px]" id="modal-contenido">
+                <!-- Aquí se inserta el video, PDF o presentación embebida -->
+            </div>
+
+            <!-- Pie del Visor con opción de respaldo -->
+            <div class="bg-gray-100 px-5 py-3 flex flex-wrap justify-between items-center gap-2 border-t text-xs sm:text-sm">
+                <a id="modal-enlace-externo" href="#" target="_blank" rel="noopener noreferrer" class="text-unlGreen hover:underline font-semibold flex items-center gap-1">
+                    <i class="fa-solid fa-up-right-from-square"></i> Abrir en pestaña completa si no carga
+                </a>
+                <button onclick="cerrarVisor()" class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg font-bold transition">
+                    Listo, volver a la lista
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT DE FUNCIONALIDAD Y GESTIÓN -->
+    <!-- SCRIPT DE GESTIÓN Y CONVERSIÓN EMBEBIDA -->
     <script>
-        // Base de datos local inicial de recursos (Editable por el Administrador)
-        let recursosGlobales = [
-            { id: 1, categoria: 'estudiantes', tipo: 'pdf', titulo: 'Guía: Buscar y Usar Información', desc: 'Aprende a filtrar fuentes fidedignas en la web de forma sencilla.', url: '#' },
-            { id: 2, categoria: 'estudiantes', tipo: 'video', titulo: 'Video: Búsqueda Segura en Internet', desc: 'Técnicas paso a paso para evitar estafas y noticias falsas.', url: '#' },
-            { id: 3, categoria: 'docentes', tipo: 'pdf', titulo: 'Guía: Evaluar Aprendizajes con TIC', desc: 'Diseño de cuestionarios e instrumentos digitales modernos.', url: '#' },
-            { id: 4, categoria: 'docentes', tipo: 'video', titulo: 'Video: Crear Rúbricas y Evaluar en Línea', desc: 'Tutorial práctico para calificar en plataformas educativas.', url: '#' }
+        // Datos iniciales con ejemplos reales funcionales embebidos
+        const recursosPorDefecto = [
+            { 
+                id: 1, 
+                categoria: 'estudiantes', 
+                tipo: 'video', 
+                titulo: 'Video: ¿Qué es el Internet y cómo navegar seguro?', 
+                desc: 'Explicación visual paso a paso ideal para principiantes.', 
+                url: 'https://www.youtube.com/watch?v=9n4N1bX_4sA' 
+            },
+            { 
+                id: 2, 
+                categoria: 'estudiantes', 
+                tipo: 'pdf', 
+                titulo: 'Guía Práctica: Alfabetización Digital Básica (PDF)', 
+                desc: 'Manual ilustrado para aprender a usar el computador y el celular.', 
+                url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' 
+            },
+            { 
+                id: 3, 
+                categoria: 'docentes', 
+                tipo: 'video', 
+                titulo: 'Video: Herramientas Digitales para Docentes', 
+                desc: 'Cómo dinamizar las clases utilizando recursos gratuitos en línea.', 
+                url: 'https://www.youtube.com/watch?v=M7lc1UVf-VE' 
+            },
+            { 
+                id: 4, 
+                categoria: 'docentes', 
+                tipo: 'pdf', 
+                titulo: 'Guía: Evaluación con TIC en el Aula (PDF)', 
+                desc: 'Documento base con ejemplos de rúbricas y cuestionarios digitales.', 
+                url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' 
+            }
         ];
 
-        let usuarioActualEmail = "";
+        // Cargar desde localStorage si existen cambios previos del administrador
+        let recursosGlobales = JSON.parse(localStorage.getItem('unl_recursos_digitales')) || recursosPorDefecto;
         let esAdmin = false;
 
-        function loginUsuario() {
-            const email = document.getElementById('auth-email').value;
-            const password = document.getElementById('auth-password').value;
+        function guardarEnNavegador() {
+            localStorage.setItem('unl_recursos_digitales', JSON.stringify(recursosGlobales));
+        }
 
-            if(!email || !password) {
-                mostrarAlertaAuth("Por favor complete los campos.");
+        // --- AUTENTICACIÓN ---
+        function loginUsuario() {
+            const email = document.getElementById('auth-email').value.trim();
+            const password = document.getElementById('auth-password').value.trim();
+
+            if (!email || !password) {
+                const m = document.getElementById('auth-message');
+                m.innerText = "Por favor escribe tu correo y contraseña.";
+                m.className = "p-3 rounded-lg text-sm text-center font-medium bg-red-100 text-red-700";
                 return;
             }
 
-            usuarioActualEmail = email;
-            // Si el correo contiene "admin" o usamos el botón de demo admin
-            esAdmin = email.includes("admin") || email.includes("profesor");
+            esAdmin = email.toLowerCase().includes("admin") || email.toLowerCase().includes("docente");
             
             document.getElementById('auth-container').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             document.getElementById('app-container').classList.add('flex');
             document.getElementById('user-email-text').innerText = email;
 
-            if(esAdmin) {
+            if (esAdmin) {
                 document.getElementById('btn-admin-panel').classList.remove('hidden');
             } else {
                 document.getElementById('btn-admin-panel').classList.add('hidden');
@@ -291,129 +348,244 @@
             volverInicio();
         }
 
-        function ingresarAdminDemo() {
-            document.getElementById('auth-email').value = "admin.digital@unl.edu.ec";
+        function ingresarAlumnoDemo() {
+            document.getElementById('auth-email').value = "estudiante@unl.edu.ec";
             document.getElementById('auth-password').value = "123456";
             loginUsuario();
         }
 
-        function registrarUsuario() {
-            alert("¡Cuenta registrada con éxito! Ya puedes iniciar sesión.");
+        function ingresarAdminDemo() {
+            document.getElementById('auth-email').value = "admin@unl.edu.ec";
+            document.getElementById('auth-password').value = "123456";
+            loginUsuario();
         }
 
         function cerrarSesion() {
+            cerrarVisor();
+            document.getElementById('admin-panel').classList.add('hidden');
             document.getElementById('app-container').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('flex');
             document.getElementById('auth-container').classList.remove('hidden');
-            document.getElementById('auth-email').value = "";
-            document.getElementById('auth-password').value = "";
         }
 
-        function mostrarAlertaAuth(msg) {
-            const m = document.getElementById('auth-message');
-            m.innerText = msg;
-            m.classList.remove('hidden');
-            m.classList.add('bg-red-100', 'text-red-700');
-        }
-
+        // --- PANEL DE ADMINISTRADOR ---
         function toggleAdminPanel() {
-            const panel = document.getElementById('admin-panel');
-            panel.classList.toggle('hidden');
+            document.getElementById('admin-panel').classList.toggle('hidden');
         }
 
-        // Función del Administrador para agregar recursos
-        function agregarRecursosPersonalizados(e) {
+        function agregarRecurso(e) {
             e.preventDefault();
             const nuevo = {
                 id: Date.now(),
-                titulo: document.getElementById('admin-titulo').value,
+                titulo: document.getElementById('admin-titulo').value.trim(),
                 categoria: document.getElementById('admin-categoria').value,
                 tipo: document.getElementById('admin-tipo').value,
-                desc: document.getElementById('admin-desc').value,
-                url: document.getElementById('admin-url').value
+                desc: document.getElementById('admin-desc').value.trim(),
+                url: document.getElementById('admin-url').value.trim()
             };
 
-            recursosGlobales.push(nuevo);
+            recursosGlobales.unshift(nuevo); // Lo pone al principio de la lista
+            guardarEnNavegador();
             renderizarRecursos();
             toggleAdminPanel();
             document.getElementById('form-subir-recurso').reset();
-            alert("¡Recurso subido y publicado correctamente para los estudiantes!");
+            
+            // Lleva al administrador directamente a la sección donde lo publicó
+            mostrarSeccion(nuevo.categoria === 'estudiantes' ? 'seccion_estudiantes' : 'seccion_docentes');
         }
 
-        // Renderizar los recursos dinámicamente en pantalla
-        function renderizarRecursos() {
+        function eliminarRecurso(event, id) {
+            event.stopPropagation(); // Evita que se abra el visor al hacer clic en borrar
+            if (confirm("¿Seguro que deseas eliminar este material?")) {
+                recursosGlobales = recursosGlobales.filter(r => r.id !== id);
+                guardarEnNavegador();
+                renderizarRecursos();
+            }
+        }
+
+        // --- CONVERSOR INTELIGENTE DE ENLACES A FORMATO EMBEBIDO ---
+        function obtenerUrlEmbebida(url, tipo) {
+            try {
+                // 1. Si es enlace de YouTube normal o corto (youtu.be)
+                if (url.includes('youtube.com/watch?v=')) {
+                    const videoId = new URL(url).searchParams.get('v');
+                    return `https://www.youtube.com/embed/${videoId}?rel=0`;
+                }
+                if (url.includes('youtu.be/')) {
+                    const videoId = url.split('youtu.be/')[1].split('?')[0];
+                    return `https://www.youtube.com/embed/${videoId}?rel=0`;
+                }
+                // 2. Si es enlace de Vimeo
+                if (url.includes('vimeo.com/') && !url.includes('player.vimeo.com')) {
+                    const videoId = url.split('vimeo.com/')[1].split('/')[0];
+                    return `https://player.vimeo.com/video/${videoId}`;
+                }
+                // 3. Si es enlace compartido de Google Drive (/view o /edit -> /preview)
+                if (url.includes('drive.google.com/file/d/')) {
+                    return url.replace(/\/view.*|\/edit.*/, '/preview');
+                }
+                // 4. Si es un PDF directo en internet y el navegador móvil no lo embebe nativamente, usamos visor de Google Docs
+                if (tipo === 'pdf' && url.toLowerCase().endsWith('.pdf')) {
+                    return `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+                }
+            } catch (e) {
+                console.warn("No se pudo transformar la URL, se usará original:", e);
+            }
+            return url;
+        }
+
+        // --- VISOR MODAL EMBEBIDO ---
+        function abrirVisor(id) {
+            const recurso = recursosGlobales.find(r => r.id === id);
+            if (!recurso) return;
+
+            const modal = document.getElementById('modal-visor');
+            const contenido = document.getElementById('modal-contenido');
+            const urlFinal = obtenerUrlEmbebida(recurso.url, recurso.tipo);
+
+            document.getElementById('modal-titulo').innerText = recurso.titulo;
+            document.getElementById('modal-descripcion').innerText = recurso.desc;
+            document.getElementById('modal-enlace-externo').href = recurso.url;
+
+            // Configurar reproductor según el tipo
+            if (recurso.tipo === 'audio') {
+                contenido.innerHTML = `
+                    <div class="p-8 text-center text-white w-full max-w-md">
+                        <div class="w-24 h-24 bg-purple-600/30 border-2 border-purple-400 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl text-purple-300 animate-pulse">
+                            <i class="fa-solid fa-headphones"></i>
+                        </div>
+                        <p class="mb-4 text-sm text-gray-300">Presiona el botón de Play (▶) para escuchar:</p>
+                        <audio controls autoplay class="w-full rounded-lg shadow-lg">
+                            <source src="${recurso.url}">
+                            Tu navegador no soporta audio directo. Usa el enlace inferior.
+                        </audio>
+                    </div>
+                `;
+            } else if (recurso.url.toLowerCase().endsWith('.mp4')) {
+                contenido.innerHTML = `
+                    <video controls autoplay class="w-full h-full max-h-[70vh] bg-black">
+                        <source src="${recurso.url}" type="video/mp4">
+                        Tu navegador no soporta video MP4.
+                    </video>
+                `;
+            } else {
+                // Iframe responsivo para YouTube, PDFs, Google Drive, Genially, Canva, etc.
+                contenido.innerHTML = `
+                    <iframe 
+                        src="${urlFinal}" 
+                        class="w-full h-[65vh] sm:h-[500px] border-0 bg-white" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" 
+                        allowfullscreen>
+                    </iframe>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function cerrarVisor() {
+            const modal = document.getElementById('modal-visor');
+            // Vaciar el contenido detiene inmediatamente el audio/video de YouTube al cerrar
+            document.getElementById('modal-contenido').innerHTML = '';
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // --- RENDERIZADO Y NAVEGACIÓN ---
+        function renderizarRecursos(filtro = '') {
             const contEstudiantes = document.getElementById('contenedor-estudiantes');
             const contDocentes = document.getElementById('contenedor-docentes');
             
             contEstudiantes.innerHTML = '';
             contDocentes.innerHTML = '';
 
-            recursosGlobales.forEach(rec => {
-                let icono = 'fa-file-lines text-emerald-600 bg-emerald-100';
-                if(rec.tipo === 'video') icono = 'fa-circle-play text-red-600 bg-red-100';
-                if(rec.tipo === 'audio') icono = 'fa-headphones text-purple-600 bg-purple-100';
-                if(rec.tipo === 'interactivo') icono = 'fa-laptop-code text-teal-600 bg-teal-100';
+            const textoFiltro = filtro.toLowerCase();
 
-                let htmlCard = `
-                    <div class="enlace border p-4 rounded-xl bg-white hover:border-emerald-500 hover:bg-slate-50 transition cursor-pointer shadow-sm flex items-center justify-between"
-                         onclick="abrirVisor('${rec.titulo}', '${rec.tipo}', '${rec.url}', '${rec.desc}')">
-                        <div class="flex items-center space-x-3">
-                            <div class="p-3 rounded-lg text-xl ${icono}"><i class="fa-solid ${icono.split(' ')[0]}"></i></div>
+            recursosGlobales.forEach(rec => {
+                if (textoFiltro && !rec.titulo.toLowerCase().includes(textoFiltro) && !rec.desc.toLowerCase().includes(textoFiltro)) {
+                    return;
+                }
+
+                let estiloIcono = 'fa-file-pdf text-red-600 bg-red-100';
+                let etiquetaTipo = 'Documento / Guía';
+
+                if (rec.tipo === 'video') {
+                    estiloIcono = 'fa-circle-play text-rose-600 bg-rose-100';
+                    etiquetaTipo = 'Video Explicativo';
+                } else if (rec.tipo === 'audio') {
+                    estiloIcono = 'fa-headphones text-purple-600 bg-purple-100';
+                    etiquetaTipo = 'Audio';
+                } else if (rec.tipo === 'web') {
+                    estiloIcono = 'fa-laptop-code text-teal-600 bg-teal-100';
+                    etiquetaTipo = 'Recurso Interactivo';
+                }
+
+                const botonEliminar = esAdmin 
+                    ? `<button onclick="eliminarRecurso(event, ${rec.id})" title="Eliminar material" class="text-gray-400 hover:text-red-600 p-2 transition"><i class="fa-solid fa-trash"></i></button>` 
+                    : '';
+
+                const htmlCard = `
+                    <div onclick="abrirVisor(${rec.id})"
+                         class="border-2 border-gray-200 p-4 rounded-2xl bg-white hover:border-unlGreen hover:bg-emerald-50/30 transition cursor-pointer shadow-sm flex items-center justify-between gap-3 group">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl shrink-0 ${estiloIcono} group-hover:scale-105 transition">
+                                <i class="fa-solid ${estiloIcono.split(' ')[0]}"></i>
+                            </div>
                             <div>
-                                <h3 class="font-bold text-gray-800 text-sm">${rec.titulo}</h3>
-                                <p class="text-xs text-gray-500">${rec.desc}</p>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400">${etiquetaTipo}</span>
+                                <h3 class="font-bold text-gray-800 text-base leading-snug group-hover:text-unlGreen">${rec.titulo}</h3>
+                                <p class="text-xs sm:text-sm text-gray-600 mt-1">${rec.desc}</p>
                             </div>
                         </div>
-                        <i class="fa-solid fa-chevron-right text-gray-300"></i>
+                        <div class="flex items-center gap-1 shrink-0">
+                            ${botonEliminar}
+                            <span class="bg-slate-100 group-hover:bg-unlGreen group-hover:text-white text-gray-600 px-3 py-2 rounded-lg text-xs font-bold transition">
+                                Ver <i class="fa-solid fa-play ml-1"></i>
+                            </span>
+                        </div>
                     </div>
                 `;
 
-                if(rec.categoria === 'estudiantes') {
+                if (rec.categoria === 'estudiantes') {
                     contEstudiantes.innerHTML += htmlCard;
                 } else {
                     contDocentes.innerHTML += htmlCard;
                 }
             });
+
+            if (contEstudiantes.innerHTML === '') {
+                contEstudiantes.innerHTML = `<p class="text-gray-500 text-sm col-span-2 text-center py-6">No se encontraron materiales con esa búsqueda.</p>`;
+            }
+            if (contDocentes.innerHTML === '') {
+                contDocentes.innerHTML = `<p class="text-gray-500 text-sm col-span-2 text-center py-6">No se encontraron materiales con esa búsqueda.</p>`;
+            }
         }
 
         function mostrarSeccion(id) {
+            document.getElementById('pantalla-inicio').classList.add('hidden');
             document.querySelectorAll('.contenido').forEach(el => el.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
-            window.scrollTo({ top: 200, behavior: 'smooth' });
+            window.scrollTo({ top: 150, behavior: 'smooth' });
         }
 
         function volverInicio() {
             document.querySelectorAll('.contenido').forEach(el => el.classList.add('hidden'));
+            document.getElementById('pantalla-inicio').classList.remove('hidden');
+            document.getElementById('input-buscador').value = '';
+            renderizarRecursos();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function abrirVisor(titulo, tipo, url, desc) {
-            const modal = document.getElementById('modal-visor');
-            document.getElementById('modal-titulo').innerText = titulo;
-            const contenido = document.getElementById('modal-contenido');
-
-            contenido.innerHTML = `
-                <div class="p-4 bg-slate-50 rounded-xl border mb-3">
-                    <p class="text-sm text-gray-700 mb-3">${desc}</p>
-                    <a href="${url !== '#' ? url : '#'}" target="_blank" onclick="${url === '#' ? "alert('Este recurso se encuentra disponible de forma local o simulada.')" : ""}"
-                       class="inline-block bg-unlGreen text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow hover:bg-unlGreenDark">
-                        <i class="fa-solid fa-download mr-1"></i> Acceder / Descargar Contenido
-                    </a>
-                </div>
-            `;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function cerrarVisor() {
-            document.getElementById('modal-visor').classList.add('hidden');
-            document.getElementById('modal-visor').classList.remove('flex');
-        }
-
-        // Filtro rápido de búsqueda
         function filtrarRecursos() {
-            const query = document.getElementById('input-buscador').value.toLowerCase();
-            if(query.length > 0) {
-                mostrarSeccion('seccion_estudiantes');
+            const query = document.getElementById('input-buscador').value;
+            renderizarRecursos(query);
+            if (query.trim().length > 0) {
+                document.getElementById('pantalla-inicio').classList.add('hidden');
+                document.getElementById('seccion_estudiantes').classList.remove('hidden');
+                document.getElementById('seccion_docentes').classList.remove('hidden');
+            } else {
+                volverInicio();
             }
         }
     </script>
