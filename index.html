@@ -1,222 +1,421 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Alfabetización Digital – Recursos Educativos</title>
+    <title>Plataforma de Alfabetización Digital - UNL</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        unlGreen: '#004d40',
+                        unlGreenDark: '#00332c',
+                        unlGold: '#ffdd55',
+                        unlStudent: '#2e7d32',
+                        unlTeacher: '#1565c0'
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background-color: #f0f4f8; line-height: 1.6; }
-
-        /* PORTADA PRINCIPAL */
-        header { background-color: #004d40; color: white; padding: 2.5rem; text-align: center; }
-        .logo { height: 90px; margin-bottom: 1.2rem; }
-        #titulo_proyecto { font-size: 2rem; margin-bottom: 0.5rem; color: #ffdd55; }
-        #descripcion_general { font-size: 1.3rem; margin-bottom: 1.5rem; color: #ffffff; }
-        .resumen_resultados { max-width: 900px; margin: 2rem auto; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: left; }
-        .resumen_resultados h3 { color: #ffdd55; margin-bottom: 0.8rem; }
-
-        /* BOTONES DE ACCESO */
-        .acceso_secciones { max-width: 900px; margin: 3rem auto; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
-        .boton_acceso { flex: 1 1 300px; text-align: center; }
-        .boton_acceso a { display: block; padding: 2rem; background: white; border-radius: 10px; text-decoration: none; color: inherit; box-shadow: 0 3px 8px rgba(0,0,0,0.15); transition: all 0.3s; }
-        .boton_acceso a:hover { transform: translateY(-5px); box-shadow: 0 5px 12px rgba(0,0,0,0.2); }
-        .boton_acceso img { height: 70px; margin-bottom: 1rem; object-fit: contain; }
-        .boton_acceso h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .boton_acceso#estudiantes h2 { color: #2e7d32; }
-        .boton_acceso#docentes h2 { color: #1565c0; }
-        .boton_acceso p { color: #555; font-size: 1rem; }
-
-        /* SECCIONES */
-        .contenido { max-width: 1200px; margin: 3rem auto; padding: 0 1rem; display: none; }
-        .contenido:target { display: block; }
-        .volver { display: inline-block; margin-bottom: 1.5rem; padding: 0.6rem 1.2rem; background: #004d40; color: white; border-radius: 6px; text-decoration: none; font-weight: bold; transition: 0.3s; }
-        .volver:hover { background: #00332c; }
-        .contenido h1 { text-align: center; margin-bottom: 2rem; padding-bottom: 0.5rem; border-bottom: 2px solid; }
-        #seccion_estudiantes h1 { color: #2e7d32; border-color: #2e7d32; }
-        #seccion_docentes h1 { color: #1565c0; border-color: #1565c0; }
-
-        .area_mejora { background: #fff3cd; border-left: 5px solid #ffc107; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0 6px 6px 0; }
-        .area_mejora h3 { color: #856404; margin-bottom: 0.5rem; }
-        .area_mejora p { color: #664d03; }
-
-        .recuadro { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .recuadro h2 { margin-bottom: 1rem; border-left: 4px solid; padding-left: 0.5rem; }
-        #seccion_estudiantes .recuadro h2 { color: #388e3c; border-color: #388e3c; }
-        #seccion_docentes .recuadro h2 { color: #1976d2; border-color: #1976d2; }
-
-        .enlaces { display: flex; flex-wrap: wrap; gap: 1rem; }
-        .enlace { flex: 1 1 200px; text-align: center; }
-        .enlace a { display: block; text-decoration: none; color: inherit; padding: 1rem; border: 1px solid #ddd; border-radius: 6px; transition: all 0.3s; }
-        .enlace a:hover { transform: translateY(-3px); }
-        #seccion_estudiantes .enlace a:hover { background: #e8f5e9; border-color: #388e3c; }
-        #seccion_docentes .enlace a:hover { background: #e3f2fd; border-color: #1976d2; }
-        .enlace img { height: 55px; margin-bottom: 0.5rem; object-fit: contain; }
-        .enlace h3 { font-size: 1rem; color: #333; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
     </style>
 </head>
-<body>
+<body class="bg-slate-100 font-sans text-gray-800 min-h-screen flex flex-col">
 
-    <!-- 🎯 PORTADA PRINCIPAL -->
-    <header id="inicio">
-        <img src="imagenes/logo_unl.jpg" class="logo" alt="Logotipo Universidad Nacional de Loja">
-        <h1 id="titulo_proyecto">FORTALECIMIENTO DE LA ALFABETIZACIÓN DIGITAL</h1>
-        <h2 id="descripcion_general">Recursos educativos adaptados a las necesidades de docentes y estudiantes</h2>
-        
-        <div class="resumen_resultados">
-            <h3>📋 Necesidades identificadas en la evaluación</h3>
-            <p><strong>Estudiantes:</strong> Se requiere fortalecer la alfabetización en información y datos, así como la creación de contenido digital (nivel bajo). Se refuerza la resolución de problemas (nivel medio).</p>
-            <p><strong>Docentes:</strong> Se debe trabajar especialmente en estrategias de evaluación con TIC y empoderamiento del estudiante (nivel bajo), además de mejorar la enseñanza digital y el desarrollo de competencias en los alumnos (nivel medio).</p>
-        </div>
-    </header>
+    <!-- 🔐 PANTALLA DE INICIO DE SESIÓN -->
+    <div id="auth-container" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-unlGreenDark to-unlGreen">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md fade-in">
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 bg-unlGreen rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg text-unlGold text-3xl font-bold border-4 border-unlGold">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-unlGreen">Alfabetización Digital UNL</h2>
+                <p class="text-sm text-gray-500 mt-1">Universidad Nacional de Loja - Ecuador</p>
+            </div>
 
-    <!-- 📌 ACCESO A SECCIONES -->
-    <div class="acceso_secciones">
-        <div class="boton_acceso" id="estudiantes">
-            <a href="#seccion_estudiantes">
-                <img src="imagenes/icono_guia.png" alt="Ícono para estudiantes">
-                <h2>Recursos para Estudiantes</h2>
-                <p>Materiales adaptados a tus necesidades de aprendizaje</p>
-            </a>
-        </div>
-        <div class="boton_acceso" id="docentes">
-            <a href="#seccion_docentes">
-                <img src="imagenes/icono_libro.png" alt="Ícono para docentes">
-                <h2>Recursos para Docentes</h2>
-                <p>Herramientas para tus clases y mejora profesional</p>
-            </a>
+            <form id="auth-form" onsubmit="event.preventDefault();" class="space-y-4">
+                <div id="auth-message" class="hidden p-3 rounded-lg text-sm text-center font-medium"></div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Correo Electrónico</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-3 top-3.5 text-gray-400"></i>
+                        <input type="email" id="auth-email" placeholder="ejemplo@unl.edu.ec" required
+                            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-unlGreen outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Contraseña</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-3 top-3.5 text-gray-400"></i>
+                        <input type="password" id="auth-password" placeholder="••••••••" required
+                            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-unlGreen outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" onclick="loginUsuario()"
+                        class="w-full bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-3 rounded-lg shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Ingresar a la Plataforma</span>
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-gray-500 pt-2 border-t">
+                    <button type="button" onclick="registrarUsuario()" class="text-unlGreen hover:underline font-semibold">
+                        Crear Cuenta Nueva
+                    </button>
+                    <button type="button" onclick="ingresarAdminDemo()" class="text-blue-600 hover:underline font-bold">
+                        ⚙️ Entregar como Administrador
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- 📚 SECCIÓN PARA ESTUDIANTES -->
-    <div class="contenido" id="seccion_estudiantes">
-        <a href="#inicio" class="volver">← Volver al inicio</a>
-        <h1>MATERIALES PARA ESTUDIANTES</h1>
+    <!-- 🎓 APLICACIÓN PRINCIPAL -->
+    <div id="app-container" class="hidden flex-1 flex-col fade-in">
 
-        <div class="area_mejora">
-            <h3>🎯 Áreas prioritarias para mejorar</h3>
-            <p>Se han preparado recursos especiales para que avances en: <strong>Alfabetización en información y datos</strong> y <strong>Creación de contenido digital</strong>, además de reforzar la resolución de problemas tecnológicos.</p>
-        </div>
+        <!-- BARRA SUPERIOR -->
+        <nav class="bg-unlGreenDark text-white px-6 py-3 flex justify-between items-center shadow-md">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-book-open-reader text-unlGold text-xl"></i>
+                <span class="font-bold text-sm md:text-base">Portal Inclusivo - Ecuador Digital</span>
+            </div>
+            <div class="flex items-center space-x-3 text-xs md:text-sm">
+                <span id="user-display" class="bg-white/10 px-3 py-1 rounded-full text-emerald-200">
+                    <i class="fa-solid fa-user-check mr-1"></i> <span id="user-email-text"></span>
+                </span>
+                <!-- Botón visible solo para administradores -->
+                <button id="btn-admin-panel" onclick="toggleAdminPanel()" class="hidden bg-unlGold text-unlGreenDark px-3 py-1.5 rounded-lg font-bold transition shadow hover:bg-yellow-400">
+                    <i class="fa-solid fa-gear"></i> Panel Admin
+                </button>
+                <button onclick="cerrarSesion()" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg font-medium transition shadow">
+                    <i class="fa-solid fa-power-off"></i> Salir
+                </button>
+            </div>
+        </nav>
 
-        <div class="recuadro">
-            <h2>Guías de estudio y textos base</h2>
-            <div class="enlaces">
-                <div class="enlace">
-                    <a href="[ENLACE_GUIA_INFO_DATOS]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_guia.png" alt="Ícono de guía">
-                        <h3>Guía: Buscar y usar información</h3>
-                    </a>
+        <!-- 🚀 PORTADA PRINCIPAL -->
+        <header class="bg-unlGreen text-white py-8 px-4 text-center shadow-lg">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-unlGold mb-2">
+                    APRENDIZAJE DIGITAL SIN BARRERAS
+                </h1>
+                <p class="text-sm sm:text-base text-slate-100 max-w-2xl mx-auto mb-4">
+                    Herramientas sencillas, videos y guías paso a paso diseñadas especialmente para aprender desde cero.
+                </p>
+                
+                <!-- Buscador rápido de recursos -->
+                <div class="max-w-md mx-auto relative">
+                    <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400"></i>
+                    <input type="text" id="input-buscador" oninput="filtrarRecursos()" placeholder="¿Qué deseas aprender hoy? (Ej. WhatsApp, Correo, Tareas...)" 
+                           class="w-full pl-11 pr-4 py-3 rounded-full text-gray-800 text-sm focus:outline-none shadow-lg">
                 </div>
-                <div class="enlace">
-                    <a href="[ENLACE_TEXTO_CREACION_CONTENIDO]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_libro.png" alt="Ícono de texto">
-                        <h3>Texto: Crear trabajos digitales</h3>
-                    </a>
+            </div>
+        </header>
+
+        <!-- 🛠️ PANEL DE ADMINISTRACIÓN (OCULTO POR DEFECTO) -->
+        <div id="admin-panel" class="hidden bg-amber-50 border-b-4 border-unlGold p-6 shadow-inner">
+            <div class="max-w-4xl mx-auto bg-white rounded-xl p-6 shadow-md border border-amber-200">
+                <div class="flex justify-between items-center mb-4 border-b pb-3">
+                    <h2 class="text-lg font-bold text-amber-800 flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Panel de Administración: Subir Nuevo Material
+                    </h2>
+                    <button onclick="toggleAdminPanel()" class="text-gray-500 hover:text-red-600 font-bold text-lg">&times;</button>
                 </div>
+                
+                <form id="form-subir-recurso" onsubmit="agregarRecursosPersonalizados(event)" class="grid sm:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <label class="block font-semibold text-gray-700 mb-1">Título del Recurso</label>
+                        <input type="text" id="admin-titulo" placeholder="Ej: Cómo usar Zoom desde el celular" required class="w-full p-2.5 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-gray-700 mb-1">Categoría Destinada</label>
+                        <select id="admin-categoria" class="w-full p-2.5 border rounded-lg">
+                            <option value="estudiantes">Estudiantes (Alfabetización básica / Tareas)</option>
+                            <option value="docentes">Docentes (Evaluación TIC / Metodologías)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-gray-700 mb-1">Tipo de Formato</label>
+                        <select id="admin-tipo" class="w-full p-2.5 border rounded-lg">
+                            <option value="pdf">Documento Guía (PDF / Texto)</option>
+                            <option value="video">Video Explicativo</option>
+                            <option value="audio">Audio / Podcast</option>
+                            <option value="interactivo">Práctica Interactiva</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-gray-700 mb-1">Enlace o Archivo (URL)</label>
+                        <input type="url" id="admin-url" placeholder="https://tu-enlace.com/archivo.pdf" required class="w-full p-2.5 border rounded-lg">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block font-semibold text-gray-700 mb-1">Breve Descripción para personas sin experiencia</label>
+                        <input type="text" id="admin-desc" placeholder="Explicación corta de 1 sola línea" required class="w-full p-2.5 border rounded-lg">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <button type="submit" class="w-full bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-2.5 rounded-lg shadow">
+                            Guardar y Publicar Recurso Inmediatamente
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <div class="recuadro">
-            <h2>Videos educativos y audios explicativos</h2>
-            <div class="enlaces">
-                <div class="enlace">
-                    <a href="[ENLACE_VIDEO_BUSQUEDA]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_silabo.png" alt="Ícono de video">
-                        <h3>Video: Cómo buscar información segura</h3>
-                    </a>
+        <!-- SELECCIÓN DE PERFIL -->
+        <section class="max-w-5xl mx-auto px-4 py-8 w-full">
+            <h3 class="text-center font-bold text-xl text-gray-700 mb-6">Selecciona una categoría para comenzar:</h3>
+            <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                <div class="bg-white rounded-2xl p-6 text-center border-2 border-emerald-500/20 shadow-md card-hover cursor-pointer" onclick="mostrarSeccion('seccion_estudiantes')">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-unlStudent mb-2">Para Estudiantes y Ciudadanos</h2>
+                    <p class="text-gray-600 text-sm mb-4">Aprende desde cero a buscar información, usar internet y enviar tareas.</p>
+                    <span class="inline-block bg-unlStudent text-white font-bold py-2 px-4 rounded-xl text-sm shadow">Ver Materiales</span>
                 </div>
-                <div class="enlace">
-                    <a href="[ENLACE_AUDIO_CREACION]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_silabo.png" alt="Ícono de audio">
-                        <h3>Audio: Pasos para hacer una presentación</h3>
-                    </a>
+
+                <div class="bg-white rounded-2xl p-6 text-center border-2 border-blue-500/20 shadow-md card-hover cursor-pointer" onclick="mostrarSeccion('seccion_docentes')">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                        <i class="fa-solid fa-chalkboard-teacher"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-unlTeacher mb-2">Para Docentes y Facilitadores</h2>
+                    <p class="text-gray-600 text-sm mb-4">Estrategias de evaluación digital, rúbricas y clases interactivas.</p>
+                    <span class="inline-block bg-unlTeacher text-white font-bold py-2 px-4 rounded-xl text-sm shadow">Ver Materiales</span>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="recuadro">
-            <h2>Clases prácticas y ejercicios</h2>
-            <div class="enlaces">
-                <div class="enlace">
-                    <a href="[ENLACE_CLASE_INFORMACION]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_guia.png" alt="Ícono de clase">
-                        <h3>Clase: Analizar datos y noticias</h3>
-                    </a>
-                </div>
-                <div class="enlace">
-                    <a href="[ENLACE_EJERCICIOS_PROBLEMAS]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_silabo.png" alt="Ícono de ejercicios">
-                        <h3>Ejercicios: Resolver fallas sencillas</h3>
-                    </a>
-                </div>
+        <!-- SECCIÓN ESTUDIANTES -->
+        <section id="seccion_estudiantes" class="contenido max-w-5xl mx-auto px-4 py-6 hidden w-full">
+            <div class="flex items-center justify-between mb-6 border-b pb-3">
+                <button onclick="volverInicio()" class="bg-unlGreen text-white px-4 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Volver
+                </button>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-unlStudent">RECURSOS PARA ESTUDIANTES</h1>
+            </div>
+            <div id="contenedor-estudiantes" class="grid sm:grid-cols-2 gap-4">
+                <!-- Inyectado dinámicamente -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN DOCENTES -->
+        <section id="seccion_docentes" class="contenido max-w-5xl mx-auto px-4 py-6 hidden w-full">
+            <div class="flex items-center justify-between mb-6 border-b pb-3">
+                <button onclick="volverInicio()" class="bg-unlGreen text-white px-4 py-2 rounded-lg font-bold text-sm shadow flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Volver
+                </button>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-unlTeacher">RECURSOS PARA DOCENTES</h1>
+            </div>
+            <div id="contenedor-docentes" class="grid sm:grid-cols-2 gap-4">
+                <!-- Inyectado dinámicamente -->
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-gray-800 text-gray-400 py-6 text-center text-xs mt-auto">
+            <p>© 2026 Universidad Nacional de Loja - Proyecto de Alfabetización Digital en Ecuador</p>
+        </footer>
+    </div>
+
+    <!-- VISOR MODAL DE RECURSOS -->
+    <div id="modal-visor" class="fixed inset-0 bg-black/70 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col">
+            <div class="bg-unlGreen text-white px-5 py-3 flex justify-between items-center">
+                <h3 id="modal-titulo" class="font-bold text-base">Detalle del Recurso</h3>
+                <button onclick="cerrarVisor()" class="text-white hover:text-unlGold text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 text-center" id="modal-contenido"></div>
+            <div class="bg-gray-100 px-5 py-3 text-right border-t">
+                <button onclick="cerrarVisor()" class="bg-gray-600 text-white px-4 py-2 rounded-lg font-bold text-sm">Cerrar Ventana</button>
             </div>
         </div>
     </div>
 
-    <!-- 📚 SECCIÓN PARA DOCENTES -->
-    <div class="contenido" id="seccion_docentes">
-        <a href="#inicio" class="volver">← Volver al inicio</a>
-        <h1>MATERIALES PARA DOCENTES</h1>
+    <!-- SCRIPT DE FUNCIONALIDAD Y GESTIÓN -->
+    <script>
+        // Base de datos local inicial de recursos (Editable por el Administrador)
+        let recursosGlobales = [
+            { id: 1, categoria: 'estudiantes', tipo: 'pdf', titulo: 'Guía: Buscar y Usar Información', desc: 'Aprende a filtrar fuentes fidedignas en la web de forma sencilla.', url: '#' },
+            { id: 2, categoria: 'estudiantes', tipo: 'video', titulo: 'Video: Búsqueda Segura en Internet', desc: 'Técnicas paso a paso para evitar estafas y noticias falsas.', url: '#' },
+            { id: 3, categoria: 'docentes', tipo: 'pdf', titulo: 'Guía: Evaluar Aprendizajes con TIC', desc: 'Diseño de cuestionarios e instrumentos digitales modernos.', url: '#' },
+            { id: 4, categoria: 'docentes', tipo: 'video', titulo: 'Video: Crear Rúbricas y Evaluar en Línea', desc: 'Tutorial práctico para calificar en plataformas educativas.', url: '#' }
+        ];
 
-        <div class="area_mejora">
-            <h3>🎯 Áreas prioritarias para tus clases</h3>
-            <p>Recursos diseñados para fortalecer: <strong>Evaluación con TIC</strong> y <strong>Empoderamiento del estudiante</strong> (nivel bajo), además de mejorar la enseñanza digital y el desarrollo de competencias en tus alumnos (nivel medio).</p>
-        </div>
+        let usuarioActualEmail = "";
+        let esAdmin = false;
 
-        <div class="recuadro">
-            <h2>Guías de estudio y textos base</h2>
-            <div class="enlaces">
-                <div class="enlace">
-                    <a href="[ENLACE_GUIA_EVALUACION_TIC]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_guia.png" alt="Ícono de guía">
-                        <h3>Guía: Evaluar aprendizajes con herramientas digitales</h3>
-                    </a>
-                </div>
-                <div class="enlace">
-                    <a href="[ENLACE_TEXTO_EMPODERAMIENTO]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_libro.png" alt="Ícono de texto">
-                        <h3>Texto: Protagonismo del estudiante en el aula</h3>
-                    </a>
-                </div>
-            </div>
-        </div>
+        function loginUsuario() {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
 
-        <div class="recuadro">
-            <h2>Videos educativos y audios explicativos</h2>
-            <div class="enlaces">
-                <div class="enlace">
-                    <a href="[ENLACE_VIDEO_RUBRICAS_DIGITALES]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_silabo.png" alt="Ícono de video">
-                        <h3>Video: Crear rúbricas y evaluar en línea</h3>
-                    </a>
-                </div>
-                <div class="enlace">
-                    <a href="[ENLACE_AUDIO_METODOLOGIAS_ACTIVAS]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_silabo.png" alt="Ícono de audio">
-                        <h3>Audio: Estrategias para que los alumnos participen</h3>
-                    </a>
-                </div>
-            </div>
-        </div>
+            if(!email || !password) {
+                mostrarAlertaAuth("Por favor complete los campos.");
+                return;
+            }
 
-        <div class="recuadro">
-            <h2>Clases prácticas y herramientas para tus sesiones</h2>
-            <div class="enlaces">
-                <div class="enlace">
-                    <a href="[ENLACE_CLASE_DESARROLLO_COMPETENCIAS]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_guia.png" alt="Ícono de clase">
-                        <h3>Clase: Enseñar competencias digitales paso a paso</h3>
-                    </a>
-                </div>
-                <div class="enlace">
-                    <a href="[ENLACE_RECURSOS_CLASES]" target="_blank" rel="noopener noreferrer">
-                        <img src="imagenes/icono_silabo.png" alt="Ícono de recursos">
-                        <h3>Materiales listos para usar en tus clases</h3>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+            usuarioActualEmail = email;
+            // Si el correo contiene "admin" o usamos el botón de demo admin
+            esAdmin = email.includes("admin") || email.includes("profesor");
+            
+            document.getElementById('auth-container').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('app-container').classList.add('flex');
+            document.getElementById('user-email-text').innerText = email;
 
+            if(esAdmin) {
+                document.getElementById('btn-admin-panel').classList.remove('hidden');
+            } else {
+                document.getElementById('btn-admin-panel').classList.add('hidden');
+            }
+
+            renderizarRecursos();
+            volverInicio();
+        }
+
+        function ingresarAdminDemo() {
+            document.getElementById('auth-email').value = "admin.digital@unl.edu.ec";
+            document.getElementById('auth-password').value = "123456";
+            loginUsuario();
+        }
+
+        function registrarUsuario() {
+            alert("¡Cuenta registrada con éxito! Ya puedes iniciar sesión.");
+        }
+
+        function cerrarSesion() {
+            document.getElementById('app-container').classList.add('hidden');
+            document.getElementById('auth-container').classList.remove('hidden');
+            document.getElementById('auth-email').value = "";
+            document.getElementById('auth-password').value = "";
+        }
+
+        function mostrarAlertaAuth(msg) {
+            const m = document.getElementById('auth-message');
+            m.innerText = msg;
+            m.classList.remove('hidden');
+            m.classList.add('bg-red-100', 'text-red-700');
+        }
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        // Función del Administrador para agregar recursos
+        function agregarRecursosPersonalizados(e) {
+            e.preventDefault();
+            const nuevo = {
+                id: Date.now(),
+                titulo: document.getElementById('admin-titulo').value,
+                categoria: document.getElementById('admin-categoria').value,
+                tipo: document.getElementById('admin-tipo').value,
+                desc: document.getElementById('admin-desc').value,
+                url: document.getElementById('admin-url').value
+            };
+
+            recursosGlobales.push(nuevo);
+            renderizarRecursos();
+            toggleAdminPanel();
+            document.getElementById('form-subir-recurso').reset();
+            alert("¡Recurso subido y publicado correctamente para los estudiantes!");
+        }
+
+        // Renderizar los recursos dinámicamente en pantalla
+        function renderizarRecursos() {
+            const contEstudiantes = document.getElementById('contenedor-estudiantes');
+            const contDocentes = document.getElementById('contenedor-docentes');
+            
+            contEstudiantes.innerHTML = '';
+            contDocentes.innerHTML = '';
+
+            recursosGlobales.forEach(rec => {
+                let icono = 'fa-file-lines text-emerald-600 bg-emerald-100';
+                if(rec.tipo === 'video') icono = 'fa-circle-play text-red-600 bg-red-100';
+                if(rec.tipo === 'audio') icono = 'fa-headphones text-purple-600 bg-purple-100';
+                if(rec.tipo === 'interactivo') icono = 'fa-laptop-code text-teal-600 bg-teal-100';
+
+                let htmlCard = `
+                    <div class="enlace border p-4 rounded-xl bg-white hover:border-emerald-500 hover:bg-slate-50 transition cursor-pointer shadow-sm flex items-center justify-between"
+                         onclick="abrirVisor('${rec.titulo}', '${rec.tipo}', '${rec.url}', '${rec.desc}')">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-3 rounded-lg text-xl ${icono}"><i class="fa-solid ${icono.split(' ')[0]}"></i></div>
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-sm">${rec.titulo}</h3>
+                                <p class="text-xs text-gray-500">${rec.desc}</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-gray-300"></i>
+                    </div>
+                `;
+
+                if(rec.categoria === 'estudiantes') {
+                    contEstudiantes.innerHTML += htmlCard;
+                } else {
+                    contDocentes.innerHTML += htmlCard;
+                }
+            });
+        }
+
+        function mostrarSeccion(id) {
+            document.querySelectorAll('.contenido').forEach(el => el.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            window.scrollTo({ top: 200, behavior: 'smooth' });
+        }
+
+        function volverInicio() {
+            document.querySelectorAll('.contenido').forEach(el => el.classList.add('hidden'));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function abrirVisor(titulo, tipo, url, desc) {
+            const modal = document.getElementById('modal-visor');
+            document.getElementById('modal-titulo').innerText = titulo;
+            const contenido = document.getElementById('modal-contenido');
+
+            contenido.innerHTML = `
+                <div class="p-4 bg-slate-50 rounded-xl border mb-3">
+                    <p class="text-sm text-gray-700 mb-3">${desc}</p>
+                    <a href="${url !== '#' ? url : '#'}" target="_blank" onclick="${url === '#' ? "alert('Este recurso se encuentra disponible de forma local o simulada.')" : ""}"
+                       class="inline-block bg-unlGreen text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow hover:bg-unlGreenDark">
+                        <i class="fa-solid fa-download mr-1"></i> Acceder / Descargar Contenido
+                    </a>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function cerrarVisor() {
+            document.getElementById('modal-visor').classList.add('hidden');
+            document.getElementById('modal-visor').classList.remove('flex');
+        }
+
+        // Filtro rápido de búsqueda
+        function filtrarRecursos() {
+            const query = document.getElementById('input-buscador').value.toLowerCase();
+            if(query.length > 0) {
+                mostrarSeccion('seccion_estudiantes');
+            }
+        }
+    </script>
 </body>
 </html>
