@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma de Alfabetización Digital - UNL</title>
-    
+    <title>Curso de Alfabetización Digital - UNL</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -27,614 +27,831 @@
     <style>
         .fade-in { animation: fadeIn 0.35s ease-in-out; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body class="bg-slate-100 font-sans text-gray-800 min-h-screen flex flex-col">
 
-    <!-- 🎓 APLICACIÓN PRINCIPAL (ACCESO ABIERTO PARA ALUMNOS/CIUDADANOS) -->
-    <div id="app-container" class="flex-1 flex flex-col fade-in">
-
-        <!-- BARRA SUPERIOR -->
-        <nav class="bg-unlGreenDark text-white px-4 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-2 shadow-md">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="volverInicio()">
-                <div class="w-9 h-9 bg-unlGreen rounded-full flex items-center justify-center border-2 border-unlGold text-unlGold">
+    <!-- 🧭 BARRA DE NAVEGACIÓN -->
+    <nav class="bg-unlGreenDark text-white px-4 sm:px-6 py-3 shadow-md sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="irAInicio()">
+                <div class="w-10 h-10 bg-unlGreen rounded-full flex items-center justify-center border-2 border-unlGold text-unlGold text-lg shrink-0">
                     <i class="fa-solid fa-graduation-cap"></i>
                 </div>
                 <div>
-                    <span class="font-bold text-sm md:text-base block leading-tight">Alfabetización Digital UNL</span>
-                    <span class="text-[11px] text-emerald-200 hidden sm:block">Universidad Nacional de Loja - Ecuador</span>
+                    <span class="font-bold text-sm sm:text-base block leading-tight">Aula de Alfabetización Digital</span>
+                    <span class="text-[11px] text-emerald-200">Universidad Nacional de Loja · Ecuador</span>
                 </div>
             </div>
 
-            <!-- CONTROLES DE ADMINISTRADOR EN LA BARRA -->
-            <div class="flex items-center space-x-2 sm:space-x-3 text-xs md:text-sm">
-                <!-- Estado cuando NO ha iniciado sesión el admin -->
-                <button id="btn-abrir-login-admin" onclick="abrirModalLoginAdmin()" 
-                    class="bg-white/10 hover:bg-white/20 text-slate-200 px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 border border-white/15">
-                    <i class="fa-solid fa-lock text-unlGold"></i>
-                    <span>Acceso Administrador</span>
+            <div class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
+                <button onclick="irAInicio()" class="hover:text-unlGold px-2.5 py-1.5 rounded-lg transition font-medium">
+                    <i class="fa-solid fa-house mr-1"></i> Cursos
                 </button>
 
-                <!-- Controles visibles SOLO cuando el Administrador inició sesión -->
-                <div id="controles-admin-activos" class="hidden flex items-center gap-2">
-                    <span class="bg-emerald-800/80 text-emerald-200 px-2.5 py-1 rounded-full text-xs hidden md:inline-flex items-center gap-1">
-                        <i class="fa-solid fa-shield-halved text-unlGold"></i> Admin Activo
+                <!-- Botón Login Docente/Admin -->
+                <button id="btn-abrir-login-admin" onclick="abrirModalLoginAdmin()"
+                    class="bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1.5 border border-white/15">
+                    <i class="fa-solid fa-lock text-unlGold"></i>
+                    <span>Acceso Docente / Admin</span>
+                </button>
+
+                <!-- Controles visibles cuando inició sesión el Docente/Admin -->
+                <div id="controles-admin-activos" class="hidden items-center gap-2">
+                    <span class="bg-emerald-800/90 text-emerald-200 px-2.5 py-1 rounded-full text-xs hidden md:inline-flex items-center gap-1">
+                        <i class="fa-solid fa-chalkboard-user text-unlGold"></i> Modo Docente
                     </span>
-                    <button onclick="toggleAdminPanel()" class="bg-unlGold text-unlGreenDark px-3 py-1.5 rounded-lg font-bold transition shadow hover:bg-yellow-400 flex items-center gap-1">
-                        <i class="fa-solid fa-plus-circle"></i> Subir Material
+                    <button onclick="abrirModalCrearCurso()"
+                        class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-lg font-bold transition shadow flex items-center gap-1">
+                        <i class="fa-solid fa-folder-plus"></i> <span class="hidden sm:inline">Nuevo Curso</span>
                     </button>
-                    <button onclick="cerrarSesionAdmin()" title="Cerrar sesión de administrador" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg font-medium transition shadow flex items-center gap-1">
-                        <i class="fa-solid fa-right-from-bracket"></i> <span class="hidden sm:inline">Salir Admin</span>
+                    <button onclick="abrirModalNuevaClase()"
+                        class="bg-unlGold hover:bg-yellow-400 text-unlGreenDark px-3 py-1.5 rounded-lg font-bold transition shadow flex items-center gap-1">
+                        <i class="fa-solid fa-plus-circle"></i> <span>Subir Clase</span>
+                    </button>
+                    <button onclick="cerrarSesionAdmin()" title="Salir del modo docente"
+                        class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg font-medium transition shadow">
+                        <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </div>
-            </div>
-        </nav>
-
-        <!-- 🚀 PORTADA PRINCIPAL -->
-        <header class="bg-unlGreen text-white py-8 px-4 text-center shadow-lg">
-            <div class="max-w-4xl mx-auto">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-unlGold mb-2">
-                    APRENDIZAJE DIGITAL SIN BARRERAS
-                </h1>
-                <p class="text-sm sm:text-base text-slate-100 max-w-2xl mx-auto mb-5">
-                    Haz clic en cualquier tarjeta para ver el video o leer la guía directamente aquí, sin salir de la página y sin necesidad de crear cuentas.
-                </p>
-                
-                <!-- Buscador rápido -->
-                <div class="max-w-lg mx-auto relative">
-                    <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400 text-lg"></i>
-                    <input type="text" id="input-buscador" oninput="filtrarRecursos()" placeholder="Escribe lo que buscas (Ej: YouTube, Correo, Rúbricas...)" 
-                           class="w-full pl-12 pr-4 py-3 rounded-full text-gray-800 text-sm sm:text-base focus:outline-none shadow-lg">
-                </div>
-            </div>
-        </header>
-
-        <!-- 🛠️ PANEL DE ADMINISTRACIÓN (PARA SUBIR RECURSOS) -->
-        <div id="admin-panel" class="hidden bg-amber-50 border-b-4 border-unlGold p-4 sm:p-6 shadow-inner fade-in">
-            <div class="max-w-4xl mx-auto bg-white rounded-xl p-6 shadow-md border border-amber-200">
-                <div class="flex justify-between items-center mb-4 border-b pb-3">
-                    <h2 class="text-lg font-bold text-amber-800 flex items-center gap-2">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Agregar Nuevo Material Embebido
-                    </h2>
-                    <button onclick="toggleAdminPanel()" class="text-gray-500 hover:text-red-600 font-bold text-2xl leading-none">&times;</button>
-                </div>
-                
-                <form id="form-subir-recurso" onsubmit="agregarRecurso(event)" class="grid sm:grid-cols-2 gap-4 text-sm">
-                    <div>
-                        <label class="block font-semibold text-gray-700 mb-1">Título del Material</label>
-                        <input type="text" id="admin-titulo" placeholder="Ej: Cómo crear una cuenta de Gmail" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-gray-700 mb-1">Dirigido a</label>
-                        <select id="admin-categoria" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
-                            <option value="estudiantes">Estudiantes y Ciudadanos</option>
-                            <option value="docentes">Docentes y Facilitadores</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-gray-700 mb-1">Tipo de Material</label>
-                        <select id="admin-tipo" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
-                            <option value="video">Video (YouTube / Vimeo / MP4)</option>
-                            <option value="pdf">Documento / Guía (Google Drive / PDF)</option>
-                            <option value="audio">Audio Explicativo (MP3 / Drive)</option>
-                            <option value="web">Presentación o Página Interactiva (Genially / Canva / Web)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-gray-700 mb-1">Enlace (URL de YouTube, Google Drive, etc.)</label>
-                        <input type="url" id="admin-url" placeholder="Pega aquí el enlace normal..." required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
-                    </div>
-                    <div class="sm:col-span-2">
-                        <label class="block font-semibold text-gray-700 mb-1">Explicación Sencilla (¿Qué aprenderán?)</label>
-                        <input type="text" id="admin-desc" placeholder="Ej: Video corto paso a paso para aprender a enviar correos desde el teléfono." required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
-                    </div>
-                    <div class="sm:col-span-2 bg-blue-50 p-3 rounded-lg text-xs text-blue-800">
-                        <i class="fa-solid fa-circle-info mr-1"></i> <strong>Tip:</strong> Puedes pegar enlaces normales de YouTube (<code>youtube.com/watch?v=...</code>) o enlaces compartidos de Google Drive; el sistema los adaptará automáticamente para verse dentro de la página.
-                    </div>
-                    <div class="sm:col-span-2">
-                        <button type="submit" class="w-full bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-3 rounded-lg shadow text-base transition">
-                            Publicar Material en la Plataforma
-                        </button>
-                    </div>
-                </form>
             </div>
         </div>
+    </nav>
 
-        <!-- SELECCIÓN DE PERFIL (INICIO) -->
-        <section id="pantalla-inicio" class="max-w-5xl mx-auto px-4 py-8 w-full">
-            <h3 class="text-center font-bold text-xl text-gray-700 mb-6">¿Qué materiales deseas explorar hoy?</h3>
-            <div class="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                <div class="bg-white rounded-2xl p-6 text-center border-2 border-emerald-500/30 shadow-md card-hover cursor-pointer transition" onclick="mostrarSeccion('seccion_estudiantes')">
-                    <div class="w-20 h-20 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                        <i class="fa-solid fa-user-graduate"></i>
+    <!-- 🏛️ ENCABEZADO PRINCIPAL -->
+    <header class="bg-unlGreen text-white py-8 px-4 shadow-lg">
+        <div class="max-w-5xl mx-auto text-center">
+            <span class="inline-block bg-white/15 text-unlGold text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+                Aprendizaje paso a paso · Sin complicaciones
+            </span>
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-unlGold mb-2">
+                CURSOS DE ALFABETIZACIÓN DIGITAL
+            </h1>
+            <p class="text-sm sm:text-base text-slate-100 max-w-2xl mx-auto mb-6">
+                Avanza clase por clase a tu propio ritmo. Los docentes publican nuevas lecciones cuando corresponde y tú puedes verlas aquí mismo.
+            </p>
+
+            <!-- Buscador y filtro por perfil -->
+            <div class="max-w-2xl mx-auto flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400"></i>
+                    <input type="text" id="buscador-cursos" oninput="renderizarCatalogoCursos()"
+                        placeholder="Buscar curso o clase (ej. internet, correo, evaluación)..."
+                        class="w-full pl-11 pr-4 py-3 rounded-xl text-gray-800 text-sm focus:outline-none shadow-md">
+                </div>
+                <select id="filtro-perfil" onchange="renderizarCatalogoCursos()"
+                    class="px-4 py-3 rounded-xl text-gray-800 text-sm font-semibold focus:outline-none shadow-md bg-white">
+                    <option value="todos">Todos los cursos</option>
+                    <option value="estudiantes">Estudiantes / Ciudadanía</option>
+                    <option value="docentes">Docentes</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- 📚 CONTENIDO PRINCIPAL -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-8">
+
+        <!-- VISTA 1: CATÁLOGO DE CURSOS -->
+        <section id="vista-catalogo" class="fade-in">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800">Rutas y Cursos Disponibles</h2>
+                    <p class="text-xs sm:text-sm text-gray-500">Elige un curso para ver sus clases en orden.</p>
+                </div>
+            </div>
+
+            <div id="contenedor-cursos" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cursos renderizados por JS -->
+            </div>
+        </section>
+
+        <!-- VISTA 2: DETALLE DEL CURSO Y CLASES -->
+        <section id="vista-curso-detalle" class="hidden fade-in">
+            <div class="mb-6">
+                <button onclick="irAInicio()"
+                    class="bg-unlGreen hover:bg-unlGreenDark text-white px-4 py-2 rounded-xl font-bold text-sm shadow inline-flex items-center gap-2 transition">
+                    <i class="fa-solid fa-arrow-left"></i> Volver a todos los cursos
+                </button>
+            </div>
+
+            <!-- Tarjeta resumen del curso -->
+            <div id="cabecera-curso" class="bg-white rounded-2xl p-6 shadow-md border-t-4 border-unlGreen mb-6">
+                <!-- Inyectado por JS -->
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6 items-start">
+                <!-- Columna Izquierda: Lista de Clases -->
+                <div class="lg:col-span-1 bg-white rounded-2xl p-5 shadow-md">
+                    <div class="flex items-center justify-between mb-4 border-b pb-3">
+                        <h3 class="font-bold text-gray-800 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol text-unlGreen"></i> Clases del Curso
+                        </h3>
+                        <button id="btn-agregar-clase-en-curso" onclick="abrirModalNuevaClase(cursoActivoId)"
+                            class="hidden text-xs bg-unlGold text-unlGreenDark font-bold px-2.5 py-1.5 rounded-lg hover:bg-yellow-400 transition">
+                            + Clase
+                        </button>
                     </div>
-                    <h2 class="text-2xl font-bold text-unlStudent mb-2">Para Estudiantes y Ciudadanos</h2>
-                    <p class="text-gray-600 text-sm mb-5">Aprende desde cero a usar internet, buscar información segura y manejar herramientas digitales.</p>
-                    <span class="inline-block bg-unlStudent text-white font-bold py-2.5 px-6 rounded-xl text-base shadow">Entrar Aquí</span>
+                    <div id="lista-clases" class="space-y-2.5">
+                        <!-- Clases renderizadas por JS -->
+                    </div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-6 text-center border-2 border-blue-500/30 shadow-md card-hover cursor-pointer transition" onclick="mostrarSeccion('seccion_docentes')">
-                    <div class="w-20 h-20 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                        <i class="fa-solid fa-chalkboard-teacher"></i>
+                <!-- Columna Derecha: Aula / Reproductor Embebido de la Clase -->
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-md overflow-hidden">
+                    <div class="bg-unlGreenDark text-white px-5 py-4 flex flex-wrap justify-between items-center gap-2">
+                        <div>
+                            <span id="aula-numero-clase" class="text-[11px] font-bold uppercase tracking-wider text-unlGold block">
+                                Selecciona una clase
+                            </span>
+                            <h3 id="aula-titulo-clase" class="font-bold text-lg">Bienvenido al aula</h3>
+                        </div>
+                        <button id="btn-marcar-completada" onclick="alternarCompletada()"
+                            class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
+                            <i class="fa-regular fa-circle-check"></i>
+                            <span id="texto-completada">Marcar como completada</span>
+                        </button>
                     </div>
-                    <h2 class="text-2xl font-bold text-unlTeacher mb-2">Para Docentes y Facilitadores</h2>
-                    <p class="text-gray-600 text-sm mb-5">Estrategias de evaluación digital, diseño de rúbricas y recursos pedagógicos interactivos.</p>
-                    <span class="inline-block bg-unlTeacher text-white font-bold py-2.5 px-6 rounded-xl text-base shadow">Entrar Aquí</span>
+
+                    <div id="aula-descripcion-clase" class="bg-slate-50 px-5 py-3 text-sm text-gray-700 border-b">
+                        Elige una clase de la lista para ver su video, guía o recurso embebido aquí mismo.
+                    </div>
+
+                    <!-- Contenedor embebido -->
+                    <div id="aula-visor-embebido" class="bg-gray-900 min-h-[340px] sm:min-h-[440px] flex items-center justify-center p-2">
+                        <div class="text-center text-gray-400 p-8">
+                            <i class="fa-solid fa-play-circle text-5xl mb-3 text-unlGold/70"></i>
+                            <p class="text-sm">Haz clic en la <strong>Clase 1</strong> para comenzar a aprender.</p>
+                        </div>
+                    </div>
+
+                    <!-- Navegación entre clases -->
+                    <div class="bg-gray-50 px-5 py-3.5 border-t flex flex-wrap justify-between items-center gap-3">
+                        <button id="btn-clase-anterior" onclick="navegarClase(-1)" disabled
+                            class="bg-gray-200 disabled:opacity-40 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-chevron-left"></i> Clase Anterior
+                        </button>
+                        <a id="aula-link-respaldo" href="#" target="_blank" rel="noopener noreferrer"
+                            class="hidden text-xs sm:text-sm text-unlGreen hover:underline font-semibold items-center gap-1">
+                            <i class="fa-solid fa-up-right-from-square"></i> Abrir en otra pestaña
+                        </a>
+                        <button id="btn-clase-siguiente" onclick="navegarClase(1)" disabled
+                            class="bg-unlGreen disabled:opacity-40 hover:bg-unlGreenDark text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5">
+                            Siguiente Clase <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECCIÓN ESTUDIANTES -->
-        <section id="seccion_estudiantes" class="contenido max-w-5xl mx-auto px-4 py-6 hidden w-full fade-in">
-            <div class="flex flex-wrap items-center justify-between gap-3 mb-6 border-b pb-4">
-                <button onclick="volverInicio()" class="bg-unlGreen hover:bg-unlGreenDark text-white px-5 py-2.5 rounded-xl font-bold text-base shadow flex items-center gap-2 transition">
-                    <i class="fa-solid fa-arrow-left"></i> Volver al Inicio
-                </button>
-                <h1 class="text-xl sm:text-2xl font-extrabold text-unlStudent">MATERIALES PARA ESTUDIANTES</h1>
-            </div>
-            <div id="contenedor-estudiantes" class="grid sm:grid-cols-2 gap-5">
-                <!-- Tarjetas generadas por JS -->
-            </div>
-        </section>
+    </main>
 
-        <!-- SECCIÓN DOCENTES -->
-        <section id="seccion_docentes" class="contenido max-w-5xl mx-auto px-4 py-6 hidden w-full fade-in">
-            <div class="flex flex-wrap items-center justify-between gap-3 mb-6 border-b pb-4">
-                <button onclick="volverInicio()" class="bg-unlGreen hover:bg-unlGreenDark text-white px-5 py-2.5 rounded-xl font-bold text-base shadow flex items-center gap-2 transition">
-                    <i class="fa-solid fa-arrow-left"></i> Volver al Inicio
-                </button>
-                <h1 class="text-xl sm:text-2xl font-extrabold text-unlTeacher">MATERIALES PARA DOCENTES</h1>
-            </div>
-            <div id="contenedor-docentes" class="grid sm:grid-cols-2 gap-5">
-                <!-- Tarjetas generadas por JS -->
-            </div>
-        </section>
+    <!-- 📌 PIE DE PÁGINA -->
+    <footer class="bg-gray-800 text-gray-400 py-6 px-4 text-center text-xs mt-auto">
+        <p>© 2026 Universidad Nacional de Loja · Proyecto de Alfabetización Digital en Ecuador</p>
+        <p class="mt-1 text-gray-500">Estructura modular pensada para el aprendizaje inclusivo y la publicación progresiva de clases</p>
+    </footer>
 
-        <!-- FOOTER -->
-        <footer class="bg-gray-800 text-gray-400 py-6 text-center text-xs mt-auto">
-            <p>© 2026 Universidad Nacional de Loja - Proyecto de Alfabetización Digital en Ecuador</p>
-        </footer>
-    </div>
-
-    <!-- 🔐 MODAL DE INICIO DE SESIÓN EXCLUSIVO PARA ADMINISTRADOR -->
+    <!-- 🔐 MODAL INICIO DE SESIÓN DOCENTE / ADMINISTRADOR -->
     <div id="modal-login-admin" class="fixed inset-0 bg-black/75 hidden items-center justify-center p-4 z-50 fade-in">
         <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
             <div class="bg-unlGreenDark text-white px-6 py-4 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-unlGold text-xl"></i>
-                    <h3 class="font-bold text-lg">Inicio de Sesión Administrador</h3>
-                </div>
-                <button onclick="cerrarModalLoginAdmin()" class="text-gray-300 hover:text-white text-2xl font-bold leading-none">&times;</button>
+                <h3 class="font-bold text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-unlGold"></i> Acceso Docente / Administrador
+                </h3>
+                <button onclick="cerrarModal('modal-login-admin')" class="text-gray-300 hover:text-white text-2xl font-bold leading-none">&times;</button>
             </div>
 
-            <form onsubmit="autenticarAdministrador(event)" class="p-6 space-y-4">
+            <form onsubmit="autenticarAdmin(event)" class="p-6 space-y-4">
                 <p class="text-xs text-gray-500">
-                    Este acceso es exclusivo para gestores de contenido que suben o actualizan materiales educativos.
+                    Inicia sesión para crear cursos, subir nuevas clases conforme avance el programa o eliminar lecciones.
                 </p>
 
-                <div id="admin-login-error" class="hidden p-3 rounded-lg text-xs font-semibold bg-red-100 text-red-700 text-center"></div>
+                <div id="error-login-admin" class="hidden p-3 rounded-lg text-xs font-semibold bg-red-100 text-red-700 text-center"></div>
 
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Usuario / Correo Administrador</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-user-tie absolute left-3 top-3.5 text-gray-400"></i>
-                        <input type="text" id="admin-login-user" placeholder="admin@unl.edu.ec" required
-                            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-unlGreen outline-none text-sm">
-                    </div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Correo / Usuario</label>
+                    <input type="text" id="login-admin-usuario" placeholder="docente@unl.edu.ec" required
+                        class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-unlGreen outline-none text-sm">
                 </div>
 
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Contraseña</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-key absolute left-3 top-3.5 text-gray-400"></i>
-                        <input type="password" id="admin-login-pass" placeholder="••••••••" required
-                            class="w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-unlGreen outline-none text-sm">
-                        <button type="button" onclick="toggleVerPassword()" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
-                            <i id="icono-ojo" class="fa-solid fa-eye"></i>
-                        </button>
-                    </div>
+                    <input type="password" id="login-admin-clave" placeholder="••••••••" required
+                        class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-unlGreen outline-none text-sm">
                 </div>
 
-                <div class="pt-2 flex gap-2">
-                    <button type="button" onclick="cerrarModalLoginAdmin()" class="w-1/3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2.5 rounded-lg text-sm transition">
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="cerrarModal('modal-login-admin')"
+                        class="w-1/3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2.5 rounded-lg text-sm">
                         Cancelar
                     </button>
-                    <button type="submit" class="w-2/3 bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-2.5 rounded-lg text-sm shadow transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-unlock"></i> Ingresar al Panel
+                    <button type="submit"
+                        class="w-2/3 bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-2.5 rounded-lg text-sm shadow">
+                        Ingresar
                     </button>
                 </div>
 
                 <div class="text-center pt-2 border-t text-[11px] text-gray-400">
-                    Credenciales por defecto: <strong>admin@unl.edu.ec</strong> / <strong>unl2026</strong>
+                    Credenciales de prueba: <strong>docente@unl.edu.ec</strong> / <strong>unl2026</strong>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- 📺 VISOR MODAL EMBEBIDO DE PANTALLA AMPLIA -->
-    <div id="modal-visor" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-2 sm:p-4 z-50 fade-in">
-        <div class="bg-white rounded-2xl w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
-            <!-- Cabecera del Visor -->
-            <div class="bg-unlGreen text-white px-5 py-3.5 flex justify-between items-center">
-                <div class="flex items-center gap-2 overflow-hidden">
-                    <i id="modal-icono" class="fa-solid fa-play-circle text-unlGold text-xl"></i>
-                    <h3 id="modal-titulo" class="font-bold text-base sm:text-lg truncate">Título del Material</h3>
+    <!-- ➕ MODAL CREAR NUEVO CURSO (DOCENTE / ADMIN) -->
+    <div id="modal-crear-curso" class="fixed inset-0 bg-black/75 hidden items-center justify-center p-4 z-50 fade-in">
+        <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div class="bg-unlGreen text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-folder-plus text-unlGold"></i> Crear Nuevo Curso
+                </h3>
+                <button onclick="cerrarModal('modal-crear-curso')" class="text-gray-200 hover:text-white text-2xl font-bold leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="guardarNuevoCurso(event)" class="p-6 space-y-4 text-sm">
+                <div>
+                    <label class="block font-semibold text-gray-700 mb-1">Nombre del Curso</label>
+                    <input type="text" id="nuevo-curso-titulo" placeholder="Ej: Uso seguro de WhatsApp y correo electrónico" required
+                        class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
                 </div>
-                <button onclick="cerrarVisor()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg font-bold text-sm flex items-center gap-1 transition">
-                    <span>Cerrar</span> <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <!-- Descripción breve -->
-            <div id="modal-descripcion" class="bg-slate-100 px-5 py-2.5 text-xs sm:text-sm text-gray-700 border-b"></div>
 
-            <!-- Contenedor del Iframe / Reproductor Embebido -->
-            <div class="flex-1 bg-gray-900 flex items-center justify-center overflow-hidden relative min-h-[320px] sm:min-h-[480px]" id="modal-contenido">
-                <!-- Aquí se inserta el video, PDF o presentación embebida -->
-            </div>
+                <div>
+                    <label class="block font-semibold text-gray-700 mb-1">Público Objetivo</label>
+                    <select id="nuevo-curso-perfil" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
+                        <option value="estudiantes">Estudiantes / Ciudadanía</option>
+                        <option value="docentes">Docentes</option>
+                    </select>
+                </div>
 
-            <!-- Pie del Visor con opción de respaldo -->
-            <div class="bg-gray-100 px-5 py-3 flex flex-wrap justify-between items-center gap-2 border-t text-xs sm:text-sm">
-                <a id="modal-enlace-externo" href="#" target="_blank" rel="noopener noreferrer" class="text-unlGreen hover:underline font-semibold flex items-center gap-1">
-                    <i class="fa-solid fa-up-right-from-square"></i> Abrir en pestaña completa si no carga
-                </a>
-                <button onclick="cerrarVisor()" class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg font-bold transition">
-                    Listo, volver a la lista
-                </button>
-            </div>
+                <div>
+                    <label class="block font-semibold text-gray-700 mb-1">Descripción breve</label>
+                    <textarea id="nuevo-curso-desc" rows="2" placeholder="¿Qué lograrán aprender al completar este curso?" required
+                        class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="cerrarModal('modal-crear-curso')" class="px-4 py-2 rounded-lg bg-gray-200 font-semibold text-gray-700">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-5 py-2 rounded-lg bg-unlGreen hover:bg-unlGreenDark font-bold text-white shadow">
+                        Crear Curso
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- SCRIPT DE GESTIÓN, AUTENTICACIÓN ADMIN Y CONVERSIÓN EMBEBIDA -->
+    <!-- 🎥 MODAL SUBIR NUEVA CLASE A UN CURSO (DOCENTE / ADMIN) -->
+    <div id="modal-nueva-clase" class="fixed inset-0 bg-black/75 hidden items-center justify-center p-4 z-50 fade-in">
+        <div class="bg-white rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl">
+            <div class="bg-unlGreen text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-unlGold"></i> Publicar Nueva Clase
+                </h3>
+                <button onclick="cerrarModal('modal-nueva-clase')" class="text-gray-200 hover:text-white text-2xl font-bold leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="guardarNuevaClase(event)" class="p-6 grid sm:grid-cols-2 gap-4 text-sm">
+                <div class="sm:col-span-2">
+                    <label class="block font-semibold text-gray-700 mb-1">Curso al que pertenece la clase</label>
+                    <select id="clase-curso-id" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
+                        <!-- Opciones llenadas por JS -->
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-gray-700 mb-1">Título de la Clase</label>
+                    <input type="text" id="clase-titulo" placeholder="Ej: Clase 2 - Cómo buscar fuentes confiables" required
+                        class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-gray-700 mb-1">Formato del Material</label>
+                    <select id="clase-tipo" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
+                        <option value="video">Video (YouTube / Vimeo / MP4)</option>
+                        <option value="pdf">Guía o PDF (Google Drive / PDF)</option>
+                        <option value="audio">Audio Explicativo</option>
+                        <option value="web">Presentación / Recurso Web</option>
+                    </select>
+                </div>
+
+                <div class="sm:col-span-2">
+                    <label class="block font-semibold text-gray-700 mb-1">Enlace del Material (URL)</label>
+                    <input type="url" id="clase-url" placeholder="https://www.youtube.com/watch?v=... o enlace de Google Drive" required
+                        class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
+                </div>
+
+                <div class="sm:col-span-2">
+                    <label class="block font-semibold text-gray-700 mb-1">Instrucción o Resumen de la Clase</label>
+                    <input type="text" id="clase-desc" placeholder="Explica brevemente qué deben observar o practicar en esta clase." required
+                        class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
+                </div>
+
+                <div class="sm:col-span-2 flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="cerrarModal('modal-nueva-clase')" class="px-4 py-2 rounded-lg bg-gray-200 font-semibold text-gray-700">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-5 py-2 rounded-lg bg-unlGreen hover:bg-unlGreenDark font-bold text-white shadow">
+                        Publicar Clase
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         // =====================================================================
-        // CREDENCIALES DEL ADMINISTRADOR (Puedes cambiarlas aquí)
+        // 1. DATOS INICIALES (Cursos con clases estructuradas)
         // =====================================================================
-        const ADMIN_CREDENCIALES = {
-            usuario: "admin@unl.edu.ec",
+        const DOCENTE_CREDENCIALES = {
+            usuario: "docente@unl.edu.ec",
             clave: "unl2026"
         };
 
-        // Datos iniciales de recursos
-        const recursosPorDefecto = [
-            { 
-                id: 1, 
-                categoria: 'estudiantes', 
-                tipo: 'video', 
-                titulo: 'Video: ¿Qué es el Internet y cómo navegar seguro?', 
-                desc: 'Explicación visual paso a paso ideal para principiantes.', 
-                url: 'https://www.youtube.com/watch?v=9n4N1bX_4sA' 
+        const cursosIniciales = [
+            {
+                id: "curso-1",
+                titulo: "Fundamentos de Internet y Navegación Segura",
+                perfil: "estudiantes",
+                descripcion: "Curso inicial para aprender qué es internet, cómo buscar información confiable y evitar engaños en línea.",
+                clases: [
+                    {
+                        id: "c-101",
+                        titulo: "Clase 1: ¿Qué es el Internet y cómo navegar seguro?",
+                        tipo: "video",
+                        url: "https://www.youtube.com/watch?v=9n4N1bX_4sA",
+                        descripcion: "Observa este video introductorio para comprender los conceptos básicos de navegación."
+                    },
+                    {
+                        id: "c-102",
+                        titulo: "Clase 2: Guía práctica de alfabetización digital",
+                        tipo: "pdf",
+                        url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+                        descripcion: "Revisa la guía paso a paso directamente en pantalla para afianzar lo aprendido."
+                    }
+                ]
             },
-            { 
-                id: 2, 
-                categoria: 'estudiantes', 
-                tipo: 'pdf', 
-                titulo: 'Guía Práctica: Alfabetización Digital Básica (PDF)', 
-                desc: 'Manual ilustrado para aprender a usar el computador y el celular.', 
-                url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' 
-            },
-            { 
-                id: 3, 
-                categoria: 'docentes', 
-                tipo: 'video', 
-                titulo: 'Video: Herramientas Digitales para Docentes', 
-                desc: 'Cómo dinamizar las clases utilizando recursos gratuitos en línea.', 
-                url: 'https://www.youtube.com/watch?v=M7lc1UVf-VE' 
-            },
-            { 
-                id: 4, 
-                categoria: 'docentes', 
-                tipo: 'pdf', 
-                titulo: 'Guía: Evaluación con TIC en el Aula (PDF)', 
-                desc: 'Documento base con ejemplos de rúbricas y cuestionarios digitales.', 
-                url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' 
+            {
+                id: "curso-2",
+                titulo: "Evaluación y Metodologías con TIC en el Aula",
+                perfil: "docentes",
+                descripcion: "Ruta formativa para docentes enfocada en diseñar evaluaciones digitales y fomentar el protagonismo estudiantil.",
+                clases: [
+                    {
+                        id: "c-201",
+                        titulo: "Clase 1: Herramientas digitales para dinamizar clases",
+                        tipo: "video",
+                        url: "https://www.youtube.com/watch?v=M7lc1UVf-VE",
+                        descripcion: "Explora estrategias prácticas para integrar recursos digitales en tus sesiones."
+                    },
+                    {
+                        id: "c-202",
+                        titulo: "Clase 2: Diseño de instrumentos y rúbricas",
+                        tipo: "pdf",
+                        url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+                        descripcion: "Consulta el documento de apoyo para estructurar criterios claros de evaluación."
+                    }
+                ]
             }
         ];
 
-        let recursosGlobales = JSON.parse(localStorage.getItem('unl_recursos_digitales')) || recursosPorDefecto;
-        // Revisar si el administrador ya había iniciado sesión en esta pestaña
-        let esAdmin = sessionStorage.getItem('unl_admin_sesion') === 'true';
+        let cursos = JSON.parse(localStorage.getItem("unl_cursos_v1")) || cursosIniciales;
+        let clasesCompletadas = JSON.parse(localStorage.getItem("unl_clases_completadas_v1")) || [];
+        let esDocenteAdmin = sessionStorage.getItem("unl_docente_sesion") === "true";
 
-        function guardarEnNavegador() {
-            localStorage.setItem('unl_recursos_digitales', JSON.stringify(recursosGlobales));
+        let cursoActivoId = null;
+        let claseActivaIndex = 0;
+
+        function guardarEstado() {
+            localStorage.setItem("unl_cursos_v1", JSON.stringify(cursos));
+            localStorage.setItem("unl_clases_completadas_v1", JSON.stringify(clasesCompletadas));
         }
 
-        // --- GESTIÓN DE INICIO DE SESIÓN ADMINISTRADOR ---
-        function abrirModalLoginAdmin() {
-            document.getElementById('admin-login-error').classList.add('hidden');
-            document.getElementById('modal-login-admin').classList.remove('hidden');
-            document.getElementById('modal-login-admin').classList.add('flex');
-            document.getElementById('admin-login-user').focus();
-        }
-
-        function cerrarModalLoginAdmin() {
-            document.getElementById('modal-login-admin').classList.add('hidden');
-            document.getElementById('modal-login-admin').classList.remove('flex');
-        }
-
-        function toggleVerPassword() {
-            const input = document.getElementById('admin-login-pass');
-            const icono = document.getElementById('icono-ojo');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icono.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icono.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        }
-
-        function autenticarAdministrador(e) {
-            e.preventDefault();
-            const user = document.getElementById('admin-login-user').value.trim().toLowerCase();
-            const pass = document.getElementById('admin-login-pass').value.trim();
-            const errorBox = document.getElementById('admin-login-error');
-
-            if (user === ADMIN_CREDENCIALES.usuario.toLowerCase() && pass === ADMIN_CREDENCIALES.clave) {
-                esAdmin = true;
-                sessionStorage.setItem('unl_admin_sesion', 'true');
-                actualizarInterfazAdmin();
-                cerrarModalLoginAdmin();
-                document.getElementById('admin-login-user').value = '';
-                document.getElementById('admin-login-pass').value = '';
-                // Abre automáticamente el formulario para subir material
-                document.getElementById('admin-panel').classList.remove('hidden');
-            } else {
-                errorBox.innerText = "Usuario o contraseña incorrectos. Verifica tus datos.";
-                errorBox.classList.remove('hidden');
-            }
-        }
-
-        function cerrarSesionAdmin() {
-            esAdmin = false;
-            sessionStorage.removeItem('unl_admin_sesion');
-            document.getElementById('admin-panel').classList.add('hidden');
-            actualizarInterfazAdmin();
-        }
-
-        function actualizarInterfazAdmin() {
-            const btnLogin = document.getElementById('btn-abrir-login-admin');
-            const controlesAdmin = document.getElementById('controles-admin-activos');
-
-            if (esAdmin) {
-                btnLogin.classList.add('hidden');
-                controlesAdmin.classList.remove('hidden');
-                controlesAdmin.classList.add('flex');
-            } else {
-                btnLogin.classList.remove('hidden');
-                controlesAdmin.classList.add('hidden');
-                controlesAdmin.classList.remove('flex');
-            }
-            // Vuelve a dibujar las tarjetas para mostrar u ocultar los iconos de eliminar
-            renderizarRecursos(document.getElementById('input-buscador').value);
-        }
-
-        // --- PANEL DE SUBIDA DE RECURSOS ---
-        function toggleAdminPanel() {
-            if (!esAdmin) return;
-            document.getElementById('admin-panel').classList.toggle('hidden');
-        }
-
-        function agregarRecurso(e) {
-            e.preventDefault();
-            if (!esAdmin) return;
-
-            const nuevo = {
-                id: Date.now(),
-                titulo: document.getElementById('admin-titulo').value.trim(),
-                categoria: document.getElementById('admin-categoria').value,
-                tipo: document.getElementById('admin-tipo').value,
-                desc: document.getElementById('admin-desc').value.trim(),
-                url: document.getElementById('admin-url').value.trim()
-            };
-
-            recursosGlobales.unshift(nuevo);
-            guardarEnNavegador();
-            renderizarRecursos();
-            toggleAdminPanel();
-            document.getElementById('form-subir-recurso').reset();
-            
-            mostrarSeccion(nuevo.categoria === 'estudiantes' ? 'seccion_estudiantes' : 'seccion_docentes');
-        }
-
-        function eliminarRecurso(event, id) {
-            event.stopPropagation();
-            if (!esAdmin) return;
-            if (confirm("¿Seguro que deseas eliminar este material?")) {
-                recursosGlobales = recursosGlobales.filter(r => r.id !== id);
-                guardarEnNavegador();
-                renderizarRecursos(document.getElementById('input-buscador').value);
-            }
-        }
-
-        // --- CONVERSOR INTELIGENTE DE ENLACES A FORMATO EMBEBIDO ---
-        function obtenerUrlEmbebida(url, tipo) {
+        // =====================================================================
+        // 2. CONVERSOR A FORMATO EMBEBIDO
+        // =====================================================================
+        function convertirAEmbebido(url, tipo) {
             try {
-                if (url.includes('youtube.com/watch?v=')) {
-                    const videoId = new URL(url).searchParams.get('v');
-                    return `https://www.youtube.com/embed/${videoId}?rel=0`;
+                if (url.includes("youtube.com/watch?v=")) {
+                    const id = new URL(url).searchParams.get("v");
+                    return `https://www.youtube.com/embed/${id}?rel=0`;
                 }
-                if (url.includes('youtu.be/')) {
-                    const videoId = url.split('youtu.be/')[1].split('?')[0];
-                    return `https://www.youtube.com/embed/${videoId}?rel=0`;
+                if (url.includes("youtu.be/")) {
+                    const id = url.split("youtu.be/")[1].split("?")[0];
+                    return `https://www.youtube.com/embed/${id}?rel=0`;
                 }
-                if (url.includes('vimeo.com/') && !url.includes('player.vimeo.com')) {
-                    const videoId = url.split('vimeo.com/')[1].split('/')[0];
-                    return `https://player.vimeo.com/video/${videoId}`;
+                if (url.includes("vimeo.com/") && !url.includes("player.vimeo.com")) {
+                    const id = url.split("vimeo.com/")[1].split("/")[0];
+                    return `https://player.vimeo.com/video/${id}`;
                 }
-                if (url.includes('drive.google.com/file/d/')) {
-                    return url.replace(/\/view.*|\/edit.*/, '/preview');
+                if (url.includes("drive.google.com/file/d/")) {
+                    return url.replace(/\/view.*|\/edit.*/, "/preview");
                 }
-                if (tipo === 'pdf' && url.toLowerCase().endsWith('.pdf')) {
+                if (tipo === "pdf" && url.toLowerCase().endsWith(".pdf")) {
                     return `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
                 }
             } catch (e) {
-                console.warn("No se pudo transformar la URL:", e);
+                console.warn("URL no transformada:", e);
             }
             return url;
         }
 
-        // --- VISOR MODAL EMBEBIDO ---
-        function abrirVisor(id) {
-            const recurso = recursosGlobales.find(r => r.id === id);
-            if (!recurso) return;
+        // =====================================================================
+        // 3. AUTENTICACIÓN DEL DOCENTE / ADMINISTRADOR
+        // =====================================================================
+        function abrirModalLoginAdmin() {
+            document.getElementById("error-login-admin").classList.add("hidden");
+            document.getElementById("modal-login-admin").classList.remove("hidden");
+            document.getElementById("modal-login-admin").classList.add("flex");
+        }
 
-            const modal = document.getElementById('modal-visor');
-            const contenido = document.getElementById('modal-contenido');
-            const urlFinal = obtenerUrlEmbebida(recurso.url, recurso.tipo);
+        function autenticarAdmin(e) {
+            e.preventDefault();
+            const usuario = document.getElementById("login-admin-usuario").value.trim().toLowerCase();
+            const clave = document.getElementById("login-admin-clave").value.trim();
 
-            document.getElementById('modal-titulo').innerText = recurso.titulo;
-            document.getElementById('modal-descripcion').innerText = recurso.desc;
-            document.getElementById('modal-enlace-externo').href = recurso.url;
+            if (usuario === DOCENTE_CREDENCIALES.usuario.toLowerCase() && clave === DOCENTE_CREDENCIALES.clave) {
+                esDocenteAdmin = true;
+                sessionStorage.setItem("unl_docente_sesion", "true");
+                document.getElementById("login-admin-usuario").value = "";
+                document.getElementById("login-admin-clave").value = "";
+                cerrarModal("modal-login-admin");
+                actualizarVistaDocente();
+            } else {
+                const err = document.getElementById("error-login-admin");
+                err.innerText = "Usuario o contraseña incorrectos.";
+                err.classList.remove("hidden");
+            }
+        }
 
-            if (recurso.tipo === 'audio') {
-                contenido.innerHTML = `
-                    <div class="p-8 text-center text-white w-full max-w-md">
-                        <div class="w-24 h-24 bg-purple-600/30 border-2 border-purple-400 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl text-purple-300 animate-pulse">
-                            <i class="fa-solid fa-headphones"></i>
+        function cerrarSesionAdmin() {
+            esDocenteAdmin = false;
+            sessionStorage.removeItem("unl_docente_sesion");
+            actualizarVistaDocente();
+        }
+
+        function actualizarVistaDocente() {
+            const btnLogin = document.getElementById("btn-abrir-login-admin");
+            const controles = document.getElementById("controles-admin-activos");
+            const btnClaseCurso = document.getElementById("btn-agregar-clase-en-curso");
+
+            if (esDocenteAdmin) {
+                btnLogin.classList.add("hidden");
+                controles.classList.remove("hidden");
+                controles.classList.add("flex");
+                btnClaseCurso.classList.remove("hidden");
+            } else {
+                btnLogin.classList.remove("hidden");
+                controles.classList.add("hidden");
+                controles.classList.remove("flex");
+                btnClaseCurso.classList.add("hidden");
+            }
+
+            renderizarCatalogoCursos();
+            if (cursoActivoId) {
+                renderizarCursoDetalle(cursoActivoId, claseActivaIndex);
+            }
+        }
+
+        // =====================================================================
+        // 4. CREACIÓN DE CURSOS Y PUBLICACIÓN DE CLASES
+        // =====================================================================
+        function abrirModalCrearCurso() {
+            if (!esDocenteAdmin) return;
+            document.getElementById("modal-crear-curso").classList.remove("hidden");
+            document.getElementById("modal-crear-curso").classList.add("flex");
+        }
+
+        function guardarNuevoCurso(e) {
+            e.preventDefault();
+            if (!esDocenteAdmin) return;
+
+            const nuevoCurso = {
+                id: "curso-" + Date.now(),
+                titulo: document.getElementById("nuevo-curso-titulo").value.trim(),
+                perfil: document.getElementById("nuevo-curso-perfil").value,
+                descripcion: document.getElementById("nuevo-curso-desc").value.trim(),
+                clases: []
+            };
+
+            cursos.unshift(nuevoCurso);
+            guardarEstado();
+            document.getElementById("nuevo-curso-titulo").value = "";
+            document.getElementById("nuevo-curso-desc").value = "";
+            cerrarModal("modal-crear-curso");
+            renderizarCatalogoCursos();
+        }
+
+        function abrirModalNuevaClase(idPreseleccionado = null) {
+            if (!esDocenteAdmin) return;
+            if (cursos.length === 0) {
+                alert("Primero crea un curso para poder agregarle clases.");
+                return;
+            }
+
+            const select = document.getElementById("clase-curso-id");
+            select.innerHTML = cursos.map(c => `<option value="${c.id}">${c.titulo}</option>`).join("");
+            if (idPreseleccionado) {
+                select.value = idPreseleccionado;
+            }
+
+            document.getElementById("modal-nueva-clase").classList.remove("hidden");
+            document.getElementById("modal-nueva-clase").classList.add("flex");
+        }
+
+        function guardarNuevaClase(e) {
+            e.preventDefault();
+            if (!esDocenteAdmin) return;
+
+            const idCurso = document.getElementById("clase-curso-id").value;
+            const curso = cursos.find(c => c.id === idCurso);
+            if (!curso) return;
+
+            const nuevaClase = {
+                id: "clase-" + Date.now(),
+                titulo: document.getElementById("clase-titulo").value.trim(),
+                tipo: document.getElementById("clase-tipo").value,
+                url: document.getElementById("clase-url").value.trim(),
+                descripcion: document.getElementById("clase-desc").value.trim()
+            };
+
+            curso.clases.push(nuevaClase);
+            guardarEstado();
+
+            document.getElementById("clase-titulo").value = "";
+            document.getElementById("clase-url").value = "";
+            document.getElementById("clase-desc").value = "";
+            cerrarModal("modal-nueva-clase");
+
+            renderizarCatalogoCursos();
+            abrirCurso(idCurso, curso.clases.length - 1);
+        }
+
+        function eliminarClase(event, idCurso, idClase) {
+            event.stopPropagation();
+            if (!esDocenteAdmin) return;
+            if (!confirm("¿Deseas eliminar esta clase del curso?")) return;
+
+            const curso = cursos.find(c => c.id === idCurso);
+            if (!curso) return;
+
+            curso.clases = curso.clases.filter(cl => cl.id !== idClase);
+            clasesCompletadas = clasesCompletadas.filter(id => id !== idClase);
+            guardarEstado();
+
+            renderizarCursoDetalle(idCurso, 0);
+        }
+
+        // =====================================================================
+        // 5. RENDERIZADO DE CATÁLOGO Y AULA DE CLASES
+        // =====================================================================
+        function renderizarCatalogoCursos() {
+            const contenedor = document.getElementById("contenedor-cursos");
+            const texto = document.getElementById("buscador-cursos").value.trim().toLowerCase();
+            const perfil = document.getElementById("filtro-perfil").value;
+
+            const filtrados = cursos.filter(c => {
+                const coincidePerfil = perfil === "todos" || c.perfil === perfil;
+                const coincideTexto = !texto ||
+                    c.titulo.toLowerCase().includes(texto) ||
+                    c.descripcion.toLowerCase().includes(texto) ||
+                    c.clases.some(cl => cl.titulo.toLowerCase().includes(texto));
+                return coincidePerfil && coincideTexto;
+            });
+
+            if (filtrados.length === 0) {
+                contenedor.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">No se encontraron cursos con ese criterio.</p>`;
+                return;
+            }
+
+            contenedor.innerHTML = filtrados.map(curso => {
+                const totalClases = curso.clases.length;
+                const completadas = curso.clases.filter(cl => clasesCompletadas.includes(cl.id)).length;
+                const porcentaje = totalClases > 0 ? Math.round((completadas / totalClases) * 100) : 0;
+
+                const badgeColor = curso.perfil === "docentes"
+                    ? "bg-blue-100 text-blue-800"
+                    : "bg-emerald-100 text-emerald-800";
+                const textoPerfil = curso.perfil === "docentes" ? "Docentes" : "Estudiantes / Ciudadanía";
+
+                return `
+                    <div onclick="abrirCurso('${curso.id}', 0)"
+                         class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 card-hover transition cursor-pointer flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <span class="text-xs font-bold px-2.5 py-1 rounded-full ${badgeColor}">${textoPerfil}</span>
+                                <span class="text-xs font-semibold text-gray-500">${totalClases} ${totalClases === 1 ? "clase" : "clases"}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">${curso.titulo}</h3>
+                            <p class="text-xs sm:text-sm text-gray-600 mb-4">${curso.descripcion}</p>
                         </div>
-                        <p class="mb-4 text-sm text-gray-300">Presiona el botón de Play (▶) para escuchar:</p>
-                        <audio controls autoplay class="w-full rounded-lg shadow-lg">
-                            <source src="${recurso.url}">
-                            Tu navegador no soporta audio directo. Usa el enlace inferior.
+
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                                <span>Tu progreso</span>
+                                <span>${porcentaje}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mb-4 overflow-hidden">
+                                <div class="bg-unlGreen h-2 rounded-full transition-all" style="width: ${porcentaje}%"></div>
+                            </div>
+                            <button type="button" class="w-full bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-2.5 rounded-xl text-sm transition">
+                                Ingresar al Curso <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function abrirCurso(idCurso, indiceClase = 0) {
+            cursoActivoId = idCurso;
+            document.getElementById("vista-catalogo").classList.add("hidden");
+            document.getElementById("vista-curso-detalle").classList.remove("hidden");
+            renderizarCursoDetalle(idCurso, indiceClase);
+            window.scrollTo({ top: 140, behavior: "smooth" });
+        }
+
+        function renderizarCursoDetalle(idCurso, indiceClase = 0) {
+            const curso = cursos.find(c => c.id === idCurso);
+            if (!curso) {
+                irAInicio();
+                return;
+            }
+
+            const total = curso.clases.length;
+            const completadas = curso.clases.filter(cl => clasesCompletadas.includes(cl.id)).length;
+            const porcentaje = total > 0 ? Math.round((completadas / total) * 100) : 0;
+
+            document.getElementById("cabecera-curso").innerHTML = `
+                <div class="flex flex-wrap justify-between items-start gap-4">
+                    <div class="max-w-2xl">
+                        <span class="text-xs font-bold uppercase tracking-wider text-unlGreen">Curso estructurado por clases</span>
+                        <h2 class="text-2xl font-extrabold text-gray-800 mt-1">${curso.titulo}</h2>
+                        <p class="text-sm text-gray-600 mt-1">${curso.descripcion}</p>
+                    </div>
+                    <div class="min-w-[180px] bg-slate-50 p-3.5 rounded-xl border">
+                        <div class="flex justify-between text-xs font-bold text-gray-700 mb-1.5">
+                            <span>Avance del curso</span>
+                            <span>${completadas}/${total} (${porcentaje}%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                            <div class="bg-emerald-600 h-2.5 rounded-full transition-all" style="width: ${porcentaje}%"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const listaClases = document.getElementById("lista-clases");
+            if (total === 0) {
+                listaClases.innerHTML = `<p class="text-xs text-gray-500 py-4 text-center">Aún no hay clases publicadas en este curso.</p>`;
+                limpiarAulaVacia();
+                return;
+            }
+
+            claseActivaIndex = Math.max(0, Math.min(indiceClase, total - 1));
+
+            listaClases.innerHTML = curso.clases.map((clase, idx) => {
+                const activa = idx === claseActivaIndex;
+                const hecha = clasesCompletadas.includes(clase.id);
+                const btnBorrar = esDocenteAdmin
+                    ? `<button onclick="eliminarClase(event, '${curso.id}', '${clase.id}')" title="Eliminar clase" class="text-gray-400 hover:text-red-600 px-1.5"><i class="fa-solid fa-trash text-xs"></i></button>`
+                    : "";
+
+                return `
+                    <div onclick="renderizarCursoDetalle('${curso.id}', ${idx})"
+                         class="p-3 rounded-xl border cursor-pointer transition flex items-center justify-between gap-2 ${activa ? "bg-emerald-50 border-unlGreen shadow-sm" : "bg-white hover:bg-slate-50 border-gray-200"}">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <span class="w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center shrink-0 ${hecha ? "bg-emerald-600 text-white" : (activa ? "bg-unlGreen text-unlGold" : "bg-gray-200 text-gray-700")}">
+                                ${hecha ? '<i class="fa-solid fa-check"></i>' : (idx + 1)}
+                            </span>
+                            <div class="truncate">
+                                <p class="text-xs sm:text-sm font-bold text-gray-800 truncate">${clase.titulo}</p>
+                                <span class="text-[11px] uppercase text-gray-500 font-semibold">${clase.tipo}</span>
+                            </div>
+                        </div>
+                        ${btnBorrar}
+                    </div>
+                `;
+            }).join("");
+
+            cargarClaseEnAula(curso.clases[claseActivaIndex], claseActivaIndex, total);
+        }
+
+        function cargarClaseEnAula(clase, indice, total) {
+            document.getElementById("aula-numero-clase").innerText = `Clase ${indice + 1} de ${total}`;
+            document.getElementById("aula-titulo-clase").innerText = clase.titulo;
+            document.getElementById("aula-descripcion-clase").innerText = clase.descripcion;
+
+            const btnCompletada = document.getElementById("btn-marcar-completada");
+            const textoCompletada = document.getElementById("texto-completada");
+            btnCompletada.classList.remove("hidden");
+
+            const yaCompletada = clasesCompletadas.includes(clase.id);
+            textoCompletada.innerText = yaCompletada ? "Clase completada" : "Marcar como completada";
+            btnCompletada.className = yaCompletada
+                ? "bg-emerald-700 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5"
+                : "bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5";
+
+            const linkRespaldo = document.getElementById("aula-link-respaldo");
+            linkRespaldo.href = clase.url;
+            linkRespaldo.classList.remove("hidden");
+            linkRespaldo.classList.add("inline-flex");
+
+            const visor = document.getElementById("aula-visor-embebido");
+            const urlEmbebida = convertirAEmbebido(clase.url, clase.tipo);
+
+            if (clase.tipo === "audio") {
+                visor.innerHTML = `
+                    <div class="p-8 text-center text-white w-full max-w-md">
+                        <i class="fa-solid fa-headphones text-5xl text-unlGold mb-4"></i>
+                        <p class="text-sm text-gray-300 mb-4">Reproduce el audio de la clase:</p>
+                        <audio controls class="w-full">
+                            <source src="${clase.url}">
+                            Tu navegador no soporta audio directo.
                         </audio>
                     </div>
                 `;
-            } else if (recurso.url.toLowerCase().endsWith('.mp4')) {
-                contenido.innerHTML = `
-                    <video controls autoplay class="w-full h-full max-h-[70vh] bg-black">
-                        <source src="${recurso.url}" type="video/mp4">
+            } else if (clase.url.toLowerCase().endsWith(".mp4")) {
+                visor.innerHTML = `
+                    <video controls class="w-full max-h-[430px] rounded-lg bg-black">
+                        <source src="${clase.url}" type="video/mp4">
                         Tu navegador no soporta video MP4.
                     </video>
                 `;
             } else {
-                contenido.innerHTML = `
-                    <iframe 
-                        src="${urlFinal}" 
-                        class="w-full h-[65vh] sm:h-[500px] border-0 bg-white" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" 
+                visor.innerHTML = `
+                    <iframe
+                        src="${urlEmbebida}"
+                        class="w-full h-[380px] sm:h-[440px] rounded-lg border-0 bg-white"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                         allowfullscreen>
                     </iframe>
                 `;
             }
 
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            document.getElementById("btn-clase-anterior").disabled = indice === 0;
+            document.getElementById("btn-clase-siguiente").disabled = indice >= total - 1;
         }
 
-        function cerrarVisor() {
-            const modal = document.getElementById('modal-visor');
-            document.getElementById('modal-contenido').innerHTML = '';
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+        function limpiarAulaVacia() {
+            document.getElementById("aula-numero-clase").innerText = "Sin clases aún";
+            document.getElementById("aula-titulo-clase").innerText = "Este curso aún no tiene clases";
+            document.getElementById("aula-descripcion-clase").innerText = "El docente publicará las lecciones próximamente.";
+            document.getElementById("aula-visor-embebido").innerHTML = `
+                <div class="text-center text-gray-400 p-8">
+                    <i class="fa-solid fa-hourglass-half text-4xl mb-2"></i>
+                    <p class="text-sm">Próximamente nuevas clases disponibles.</p>
+                </div>
+            `;
+            document.getElementById("btn-marcar-completada").classList.add("hidden");
+            document.getElementById("aula-link-respaldo").classList.add("hidden");
+            document.getElementById("btn-clase-anterior").disabled = true;
+            document.getElementById("btn-clase-siguiente").disabled = true;
         }
 
-        // --- RENDERIZADO Y NAVEGACIÓN ---
-        function renderizarRecursos(filtro = '') {
-            const contEstudiantes = document.getElementById('contenedor-estudiantes');
-            const contDocentes = document.getElementById('contenedor-docentes');
-            
-            contEstudiantes.innerHTML = '';
-            contDocentes.innerHTML = '';
+        function alternarCompletada() {
+            const curso = cursos.find(c => c.id === cursoActivoId);
+            if (!curso || !curso.clases[claseActivaIndex]) return;
+            const idClase = curso.clases[claseActivaIndex].id;
 
-            const textoFiltro = filtro.toLowerCase();
-
-            recursosGlobales.forEach(rec => {
-                if (textoFiltro && !rec.titulo.toLowerCase().includes(textoFiltro) && !rec.desc.toLowerCase().includes(textoFiltro)) {
-                    return;
-                }
-
-                let estiloIcono = 'fa-file-pdf text-red-600 bg-red-100';
-                let etiquetaTipo = 'Documento / Guía';
-
-                if (rec.tipo === 'video') {
-                    estiloIcono = 'fa-circle-play text-rose-600 bg-rose-100';
-                    etiquetaTipo = 'Video Explicativo';
-                } else if (rec.tipo === 'audio') {
-                    estiloIcono = 'fa-headphones text-purple-600 bg-purple-100';
-                    etiquetaTipo = 'Audio';
-                } else if (rec.tipo === 'web') {
-                    estiloIcono = 'fa-laptop-code text-teal-600 bg-teal-100';
-                    etiquetaTipo = 'Recurso Interactivo';
-                }
-
-                const botonEliminar = esAdmin 
-                    ? `<button onclick="eliminarRecurso(event, ${rec.id})" title="Eliminar material" class="text-gray-400 hover:text-red-600 p-2 transition"><i class="fa-solid fa-trash"></i></button>` 
-                    : '';
-
-                const htmlCard = `
-                    <div onclick="abrirVisor(${rec.id})"
-                         class="border-2 border-gray-200 p-4 rounded-2xl bg-white hover:border-unlGreen hover:bg-emerald-50/30 transition cursor-pointer shadow-sm flex items-center justify-between gap-3 group">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-14 h-14 rounded-xl flex items-center justify-center text-2xl shrink-0 ${estiloIcono} group-hover:scale-105 transition">
-                                <i class="fa-solid ${estiloIcono.split(' ')[0]}"></i>
-                            </div>
-                            <div>
-                                <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400">${etiquetaTipo}</span>
-                                <h3 class="font-bold text-gray-800 text-base leading-snug group-hover:text-unlGreen">${rec.titulo}</h3>
-                                <p class="text-xs sm:text-sm text-gray-600 mt-1">${rec.desc}</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-1 shrink-0">
-                            ${botonEliminar}
-                            <span class="bg-slate-100 group-hover:bg-unlGreen group-hover:text-white text-gray-600 px-3 py-2 rounded-lg text-xs font-bold transition">
-                                Ver <i class="fa-solid fa-play ml-1"></i>
-                            </span>
-                        </div>
-                    </div>
-                `;
-
-                if (rec.categoria === 'estudiantes') {
-                    contEstudiantes.innerHTML += htmlCard;
-                } else {
-                    contDocentes.innerHTML += htmlCard;
-                }
-            });
-
-            if (contEstudiantes.innerHTML === '') {
-                contEstudiantes.innerHTML = `<p class="text-gray-500 text-sm col-span-2 text-center py-6">No se encontraron materiales con esa búsqueda.</p>`;
-            }
-            if (contDocentes.innerHTML === '') {
-                contDocentes.innerHTML = `<p class="text-gray-500 text-sm col-span-2 text-center py-6">No se encontraron materiales con esa búsqueda.</p>`;
-            }
-        }
-
-        function mostrarSeccion(id) {
-            document.getElementById('pantalla-inicio').classList.add('hidden');
-            document.querySelectorAll('.contenido').forEach(el => el.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            window.scrollTo({ top: 150, behavior: 'smooth' });
-        }
-
-        function volverInicio() {
-            document.querySelectorAll('.contenido').forEach(el => el.classList.add('hidden'));
-            document.getElementById('pantalla-inicio').classList.remove('hidden');
-            document.getElementById('input-buscador').value = '';
-            renderizarRecursos();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function filtrarRecursos() {
-            const query = document.getElementById('input-buscador').value;
-            renderizarRecursos(query);
-            if (query.trim().length > 0) {
-                document.getElementById('pantalla-inicio').classList.add('hidden');
-                document.getElementById('seccion_estudiantes').classList.remove('hidden');
-                document.getElementById('seccion_docentes').classList.remove('hidden');
+            if (clasesCompletadas.includes(idClase)) {
+                clasesCompletadas = clasesCompletadas.filter(id => id !== idClase);
             } else {
-                volverInicio();
+                clasesCompletadas.push(idClase);
             }
+            guardarEstado();
+            renderizarCursoDetalle(cursoActivoId, claseActivaIndex);
+            renderizarCatalogoCursos();
         }
 
-        // Inicializar aplicación al cargar
-        actualizarInterfazAdmin();
+        function navegarClase(paso) {
+            renderizarCursoDetalle(cursoActivoId, claseActivaIndex + paso);
+        }
+
+        function irAInicio() {
+            cursoActivoId = null;
+            document.getElementById("vista-curso-detalle").classList.add("hidden");
+            document.getElementById("vista-catalogo").classList.remove("hidden");
+            renderizarCatalogoCursos();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function cerrarModal(idModal) {
+            const el = document.getElementById(idModal);
+            el.classList.add("hidden");
+            el.classList.remove("flex");
+        }
+
+        // Inicialización
+        actualizarVistaDocente();
     </script>
 </body>
 </html>
