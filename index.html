@@ -38,78 +38,42 @@
 </head>
 <body class="bg-slate-100 font-sans text-gray-800 min-h-screen flex flex-col">
 
-    <!-- 🔐 PANTALLA DE INICIO DE SESIÓN -->
-    <div id="auth-container" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-unlGreenDark to-unlGreen">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md fade-in">
-            <div class="text-center mb-6">
-                <div class="w-20 h-20 bg-unlGreen rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg text-unlGold text-3xl font-bold border-4 border-unlGold">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-unlGreen">Alfabetización Digital UNL</h2>
-                <p class="text-sm text-gray-500 mt-1">Universidad Nacional de Loja - Ecuador</p>
-            </div>
-
-            <form id="auth-form" onsubmit="event.preventDefault();" class="space-y-4">
-                <div id="auth-message" class="hidden p-3 rounded-lg text-sm text-center font-medium"></div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Correo Electrónico</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-envelope absolute left-3 top-3.5 text-gray-400"></i>
-                        <input type="email" id="auth-email" placeholder="ejemplo@unl.edu.ec" required
-                            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-unlGreen outline-none">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Contraseña</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-lock absolute left-3 top-3.5 text-gray-400"></i>
-                        <input type="password" id="auth-password" placeholder="••••••••" required
-                            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-unlGreen outline-none">
-                    </div>
-                </div>
-
-                <div>
-                    <button type="submit" onclick="loginUsuario()"
-                        class="w-full bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-3 rounded-lg shadow-md transition flex items-center justify-center gap-2 text-base">
-                        <i class="fa-solid fa-right-to-bracket"></i>
-                        <span>Ingresar a la Plataforma</span>
-                    </button>
-                </div>
-
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500 pt-3 border-t">
-                    <button type="button" onclick="ingresarAlumnoDemo()" class="text-emerald-700 hover:underline font-bold">
-                        👨‍🎓 Entrar directo como Alumno
-                    </button>
-                    <button type="button" onclick="ingresarAdminDemo()" class="text-blue-700 hover:underline font-bold">
-                        ⚙️ Entrar como Administrador
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 🎓 APLICACIÓN PRINCIPAL -->
-    <div id="app-container" class="hidden flex-1 flex-col fade-in">
+    <!-- 🎓 APLICACIÓN PRINCIPAL (ACCESO ABIERTO PARA ALUMNOS/CIUDADANOS) -->
+    <div id="app-container" class="flex-1 flex flex-col fade-in">
 
         <!-- BARRA SUPERIOR -->
         <nav class="bg-unlGreenDark text-white px-4 sm:px-6 py-3 flex flex-wrap justify-between items-center gap-2 shadow-md">
-            <div class="flex items-center space-x-3">
-                <i class="fa-solid fa-book-open-reader text-unlGold text-xl"></i>
-                <span class="font-bold text-sm md:text-base">Portal Inclusivo - Ecuador Digital</span>
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="volverInicio()">
+                <div class="w-9 h-9 bg-unlGreen rounded-full flex items-center justify-center border-2 border-unlGold text-unlGold">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-sm md:text-base block leading-tight">Alfabetización Digital UNL</span>
+                    <span class="text-[11px] text-emerald-200 hidden sm:block">Universidad Nacional de Loja - Ecuador</span>
+                </div>
             </div>
+
+            <!-- CONTROLES DE ADMINISTRADOR EN LA BARRA -->
             <div class="flex items-center space-x-2 sm:space-x-3 text-xs md:text-sm">
-                <span id="user-display" class="bg-white/10 px-3 py-1.5 rounded-full text-emerald-200 hidden sm:inline-block">
-                    <i class="fa-solid fa-user-check mr-1"></i> <span id="user-email-text"></span>
-                </span>
-                <!-- Botón visible solo para administradores -->
-                <button id="btn-admin-panel" onclick="toggleAdminPanel()" class="hidden bg-unlGold text-unlGreenDark px-3 py-1.5 rounded-lg font-bold transition shadow hover:bg-yellow-400 flex items-center gap-1">
-                    <i class="fa-solid fa-plus-circle"></i> Subir Material
+                <!-- Estado cuando NO ha iniciado sesión el admin -->
+                <button id="btn-abrir-login-admin" onclick="abrirModalLoginAdmin()" 
+                    class="bg-white/10 hover:bg-white/20 text-slate-200 px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 border border-white/15">
+                    <i class="fa-solid fa-lock text-unlGold"></i>
+                    <span>Acceso Administrador</span>
                 </button>
-                <button onclick="cerrarSesion()" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg font-medium transition shadow flex items-center gap-1">
-                    <i class="fa-solid fa-power-off"></i> Salir
-                </button>
+
+                <!-- Controles visibles SOLO cuando el Administrador inició sesión -->
+                <div id="controles-admin-activos" class="hidden flex items-center gap-2">
+                    <span class="bg-emerald-800/80 text-emerald-200 px-2.5 py-1 rounded-full text-xs hidden md:inline-flex items-center gap-1">
+                        <i class="fa-solid fa-shield-halved text-unlGold"></i> Admin Activo
+                    </span>
+                    <button onclick="toggleAdminPanel()" class="bg-unlGold text-unlGreenDark px-3 py-1.5 rounded-lg font-bold transition shadow hover:bg-yellow-400 flex items-center gap-1">
+                        <i class="fa-solid fa-plus-circle"></i> Subir Material
+                    </button>
+                    <button onclick="cerrarSesionAdmin()" title="Cerrar sesión de administrador" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg font-medium transition shadow flex items-center gap-1">
+                        <i class="fa-solid fa-right-from-bracket"></i> <span class="hidden sm:inline">Salir Admin</span>
+                    </button>
+                </div>
             </div>
         </nav>
 
@@ -120,7 +84,7 @@
                     APRENDIZAJE DIGITAL SIN BARRERAS
                 </h1>
                 <p class="text-sm sm:text-base text-slate-100 max-w-2xl mx-auto mb-5">
-                    Haz clic en cualquier tarjeta para ver el video o leer la guía directamente aquí, sin salir de la página.
+                    Haz clic en cualquier tarjeta para ver el video o leer la guía directamente aquí, sin salir de la página y sin necesidad de crear cuentas.
                 </p>
                 
                 <!-- Buscador rápido -->
@@ -132,7 +96,7 @@
             </div>
         </header>
 
-        <!-- 🛠️ PANEL DE ADMINISTRACIÓN -->
+        <!-- 🛠️ PANEL DE ADMINISTRACIÓN (PARA SUBIR RECURSOS) -->
         <div id="admin-panel" class="hidden bg-amber-50 border-b-4 border-unlGold p-4 sm:p-6 shadow-inner fade-in">
             <div class="max-w-4xl mx-auto bg-white rounded-xl p-6 shadow-md border border-amber-200">
                 <div class="flex justify-between items-center mb-4 border-b pb-3">
@@ -239,6 +203,61 @@
         </footer>
     </div>
 
+    <!-- 🔐 MODAL DE INICIO DE SESIÓN EXCLUSIVO PARA ADMINISTRADOR -->
+    <div id="modal-login-admin" class="fixed inset-0 bg-black/75 hidden items-center justify-center p-4 z-50 fade-in">
+        <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+            <div class="bg-unlGreenDark text-white px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-unlGold text-xl"></i>
+                    <h3 class="font-bold text-lg">Inicio de Sesión Administrador</h3>
+                </div>
+                <button onclick="cerrarModalLoginAdmin()" class="text-gray-300 hover:text-white text-2xl font-bold leading-none">&times;</button>
+            </div>
+
+            <form onsubmit="autenticarAdministrador(event)" class="p-6 space-y-4">
+                <p class="text-xs text-gray-500">
+                    Este acceso es exclusivo para gestores de contenido que suben o actualizan materiales educativos.
+                </p>
+
+                <div id="admin-login-error" class="hidden p-3 rounded-lg text-xs font-semibold bg-red-100 text-red-700 text-center"></div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Usuario / Correo Administrador</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user-tie absolute left-3 top-3.5 text-gray-400"></i>
+                        <input type="text" id="admin-login-user" placeholder="admin@unl.edu.ec" required
+                            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-unlGreen outline-none text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Contraseña</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-key absolute left-3 top-3.5 text-gray-400"></i>
+                        <input type="password" id="admin-login-pass" placeholder="••••••••" required
+                            class="w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-unlGreen outline-none text-sm">
+                        <button type="button" onclick="toggleVerPassword()" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
+                            <i id="icono-ojo" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex gap-2">
+                    <button type="button" onclick="cerrarModalLoginAdmin()" class="w-1/3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2.5 rounded-lg text-sm transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="w-2/3 bg-unlGreen hover:bg-unlGreenDark text-white font-bold py-2.5 rounded-lg text-sm shadow transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-unlock"></i> Ingresar al Panel
+                    </button>
+                </div>
+
+                <div class="text-center pt-2 border-t text-[11px] text-gray-400">
+                    Credenciales por defecto: <strong>admin@unl.edu.ec</strong> / <strong>unl2026</strong>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- 📺 VISOR MODAL EMBEBIDO DE PANTALLA AMPLIA -->
     <div id="modal-visor" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-2 sm:p-4 z-50 fade-in">
         <div class="bg-white rounded-2xl w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
@@ -273,9 +292,17 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE GESTIÓN Y CONVERSIÓN EMBEBIDA -->
+    <!-- SCRIPT DE GESTIÓN, AUTENTICACIÓN ADMIN Y CONVERSIÓN EMBEBIDA -->
     <script>
-        // Datos iniciales con ejemplos reales funcionales embebidos
+        // =====================================================================
+        // CREDENCIALES DEL ADMINISTRADOR (Puedes cambiarlas aquí)
+        // =====================================================================
+        const ADMIN_CREDENCIALES = {
+            usuario: "admin@unl.edu.ec",
+            clave: "unl2026"
+        };
+
+        // Datos iniciales de recursos
         const recursosPorDefecto = [
             { 
                 id: 1, 
@@ -311,70 +338,94 @@
             }
         ];
 
-        // Cargar desde localStorage si existen cambios previos del administrador
         let recursosGlobales = JSON.parse(localStorage.getItem('unl_recursos_digitales')) || recursosPorDefecto;
-        let esAdmin = false;
+        // Revisar si el administrador ya había iniciado sesión en esta pestaña
+        let esAdmin = sessionStorage.getItem('unl_admin_sesion') === 'true';
 
         function guardarEnNavegador() {
             localStorage.setItem('unl_recursos_digitales', JSON.stringify(recursosGlobales));
         }
 
-        // --- AUTENTICACIÓN ---
-        function loginUsuario() {
-            const email = document.getElementById('auth-email').value.trim();
-            const password = document.getElementById('auth-password').value.trim();
+        // --- GESTIÓN DE INICIO DE SESIÓN ADMINISTRADOR ---
+        function abrirModalLoginAdmin() {
+            document.getElementById('admin-login-error').classList.add('hidden');
+            document.getElementById('modal-login-admin').classList.remove('hidden');
+            document.getElementById('modal-login-admin').classList.add('flex');
+            document.getElementById('admin-login-user').focus();
+        }
 
-            if (!email || !password) {
-                const m = document.getElementById('auth-message');
-                m.innerText = "Por favor escribe tu correo y contraseña.";
-                m.className = "p-3 rounded-lg text-sm text-center font-medium bg-red-100 text-red-700";
-                return;
+        function cerrarModalLoginAdmin() {
+            document.getElementById('modal-login-admin').classList.add('hidden');
+            document.getElementById('modal-login-admin').classList.remove('flex');
+        }
+
+        function toggleVerPassword() {
+            const input = document.getElementById('admin-login-pass');
+            const icono = document.getElementById('icono-ojo');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icono.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icono.classList.replace('fa-eye-slash', 'fa-eye');
             }
+        }
 
-            esAdmin = email.toLowerCase().includes("admin") || email.toLowerCase().includes("docente");
-            
-            document.getElementById('auth-container').classList.add('hidden');
-            document.getElementById('app-container').classList.remove('hidden');
-            document.getElementById('app-container').classList.add('flex');
-            document.getElementById('user-email-text').innerText = email;
+        function autenticarAdministrador(e) {
+            e.preventDefault();
+            const user = document.getElementById('admin-login-user').value.trim().toLowerCase();
+            const pass = document.getElementById('admin-login-pass').value.trim();
+            const errorBox = document.getElementById('admin-login-error');
+
+            if (user === ADMIN_CREDENCIALES.usuario.toLowerCase() && pass === ADMIN_CREDENCIALES.clave) {
+                esAdmin = true;
+                sessionStorage.setItem('unl_admin_sesion', 'true');
+                actualizarInterfazAdmin();
+                cerrarModalLoginAdmin();
+                document.getElementById('admin-login-user').value = '';
+                document.getElementById('admin-login-pass').value = '';
+                // Abre automáticamente el formulario para subir material
+                document.getElementById('admin-panel').classList.remove('hidden');
+            } else {
+                errorBox.innerText = "Usuario o contraseña incorrectos. Verifica tus datos.";
+                errorBox.classList.remove('hidden');
+            }
+        }
+
+        function cerrarSesionAdmin() {
+            esAdmin = false;
+            sessionStorage.removeItem('unl_admin_sesion');
+            document.getElementById('admin-panel').classList.add('hidden');
+            actualizarInterfazAdmin();
+        }
+
+        function actualizarInterfazAdmin() {
+            const btnLogin = document.getElementById('btn-abrir-login-admin');
+            const controlesAdmin = document.getElementById('controles-admin-activos');
 
             if (esAdmin) {
-                document.getElementById('btn-admin-panel').classList.remove('hidden');
+                btnLogin.classList.add('hidden');
+                controlesAdmin.classList.remove('hidden');
+                controlesAdmin.classList.add('flex');
             } else {
-                document.getElementById('btn-admin-panel').classList.add('hidden');
+                btnLogin.classList.remove('hidden');
+                controlesAdmin.classList.add('hidden');
+                controlesAdmin.classList.remove('flex');
             }
-
-            renderizarRecursos();
-            volverInicio();
+            // Vuelve a dibujar las tarjetas para mostrar u ocultar los iconos de eliminar
+            renderizarRecursos(document.getElementById('input-buscador').value);
         }
 
-        function ingresarAlumnoDemo() {
-            document.getElementById('auth-email').value = "estudiante@unl.edu.ec";
-            document.getElementById('auth-password').value = "123456";
-            loginUsuario();
-        }
-
-        function ingresarAdminDemo() {
-            document.getElementById('auth-email').value = "admin@unl.edu.ec";
-            document.getElementById('auth-password').value = "123456";
-            loginUsuario();
-        }
-
-        function cerrarSesion() {
-            cerrarVisor();
-            document.getElementById('admin-panel').classList.add('hidden');
-            document.getElementById('app-container').classList.add('hidden');
-            document.getElementById('app-container').classList.remove('flex');
-            document.getElementById('auth-container').classList.remove('hidden');
-        }
-
-        // --- PANEL DE ADMINISTRADOR ---
+        // --- PANEL DE SUBIDA DE RECURSOS ---
         function toggleAdminPanel() {
+            if (!esAdmin) return;
             document.getElementById('admin-panel').classList.toggle('hidden');
         }
 
         function agregarRecurso(e) {
             e.preventDefault();
+            if (!esAdmin) return;
+
             const nuevo = {
                 id: Date.now(),
                 titulo: document.getElementById('admin-titulo').value.trim(),
@@ -384,29 +435,28 @@
                 url: document.getElementById('admin-url').value.trim()
             };
 
-            recursosGlobales.unshift(nuevo); // Lo pone al principio de la lista
+            recursosGlobales.unshift(nuevo);
             guardarEnNavegador();
             renderizarRecursos();
             toggleAdminPanel();
             document.getElementById('form-subir-recurso').reset();
             
-            // Lleva al administrador directamente a la sección donde lo publicó
             mostrarSeccion(nuevo.categoria === 'estudiantes' ? 'seccion_estudiantes' : 'seccion_docentes');
         }
 
         function eliminarRecurso(event, id) {
-            event.stopPropagation(); // Evita que se abra el visor al hacer clic en borrar
+            event.stopPropagation();
+            if (!esAdmin) return;
             if (confirm("¿Seguro que deseas eliminar este material?")) {
                 recursosGlobales = recursosGlobales.filter(r => r.id !== id);
                 guardarEnNavegador();
-                renderizarRecursos();
+                renderizarRecursos(document.getElementById('input-buscador').value);
             }
         }
 
         // --- CONVERSOR INTELIGENTE DE ENLACES A FORMATO EMBEBIDO ---
         function obtenerUrlEmbebida(url, tipo) {
             try {
-                // 1. Si es enlace de YouTube normal o corto (youtu.be)
                 if (url.includes('youtube.com/watch?v=')) {
                     const videoId = new URL(url).searchParams.get('v');
                     return `https://www.youtube.com/embed/${videoId}?rel=0`;
@@ -415,21 +465,18 @@
                     const videoId = url.split('youtu.be/')[1].split('?')[0];
                     return `https://www.youtube.com/embed/${videoId}?rel=0`;
                 }
-                // 2. Si es enlace de Vimeo
                 if (url.includes('vimeo.com/') && !url.includes('player.vimeo.com')) {
                     const videoId = url.split('vimeo.com/')[1].split('/')[0];
                     return `https://player.vimeo.com/video/${videoId}`;
                 }
-                // 3. Si es enlace compartido de Google Drive (/view o /edit -> /preview)
                 if (url.includes('drive.google.com/file/d/')) {
                     return url.replace(/\/view.*|\/edit.*/, '/preview');
                 }
-                // 4. Si es un PDF directo en internet y el navegador móvil no lo embebe nativamente, usamos visor de Google Docs
                 if (tipo === 'pdf' && url.toLowerCase().endsWith('.pdf')) {
                     return `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
                 }
             } catch (e) {
-                console.warn("No se pudo transformar la URL, se usará original:", e);
+                console.warn("No se pudo transformar la URL:", e);
             }
             return url;
         }
@@ -447,7 +494,6 @@
             document.getElementById('modal-descripcion').innerText = recurso.desc;
             document.getElementById('modal-enlace-externo').href = recurso.url;
 
-            // Configurar reproductor según el tipo
             if (recurso.tipo === 'audio') {
                 contenido.innerHTML = `
                     <div class="p-8 text-center text-white w-full max-w-md">
@@ -469,7 +515,6 @@
                     </video>
                 `;
             } else {
-                // Iframe responsivo para YouTube, PDFs, Google Drive, Genially, Canva, etc.
                 contenido.innerHTML = `
                     <iframe 
                         src="${urlFinal}" 
@@ -486,7 +531,6 @@
 
         function cerrarVisor() {
             const modal = document.getElementById('modal-visor');
-            // Vaciar el contenido detiene inmediatamente el audio/video de YouTube al cerrar
             document.getElementById('modal-contenido').innerHTML = '';
             modal.classList.add('hidden');
             modal.classList.remove('flex');
@@ -588,6 +632,9 @@
                 volverInicio();
             }
         }
+
+        // Inicializar aplicación al cargar
+        actualizarInterfazAdmin();
     </script>
 </body>
 </html>
