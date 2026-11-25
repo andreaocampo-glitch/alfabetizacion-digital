@@ -70,7 +70,7 @@
                     </span>
                     <button onclick="abrirModalCrearCurso()"
                         class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-lg font-bold transition shadow flex items-center gap-1">
-                        <i class="fa-solid fa-folder-plus"></i> <span class="hidden sm:inline">Nuevo Curso</span>
+                        <i class="fa-solid fa-folder-plus"></i> <span class="hidden sm:inline">Nuevo Taller</span>
                     </button>
                     <button onclick="abrirModalNuevaClase()"
                         class="bg-unlGold hover:bg-yellow-400 text-unlGreenDark px-3 py-1.5 rounded-lg font-bold transition shadow flex items-center gap-1">
@@ -103,7 +103,7 @@
                 <div class="relative flex-1">
                     <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400"></i>
                     <input type="text" id="buscador-cursos" oninput="renderizarCatalogoCursos()"
-                        placeholder="Buscar curso o clase (ej. internet, correo, evaluación)..."
+                        placeholder="Buscar taller o clase (ej. internet, correo, evaluación)..."
                         class="w-full pl-11 pr-4 py-3 rounded-xl text-gray-800 text-sm focus:outline-none shadow-md">
                 </div>
                 <select id="filtro-perfil" onchange="renderizarCatalogoCursos()"
@@ -123,8 +123,8 @@
         <section id="vista-catalogo" class="fade-in">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800">Rutas y Cursos Disponibles</h2>
-                    <p class="text-xs sm:text-sm text-gray-500">Elige un curso para ver sus clases en orden.</p>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800">Rutas y taller Disponibles</h2>
+                    <p class="text-xs sm:text-sm text-gray-500">Elige un taller para ver sus clases en orden.</p>
                 </div>
             </div>
 
@@ -152,7 +152,7 @@
                 <div class="lg:col-span-1 bg-white rounded-2xl p-5 shadow-md">
                     <div class="flex items-center justify-between mb-4 border-b pb-3">
                         <h3 class="font-bold text-gray-800 text-base flex items-center gap-2">
-                            <i class="fa-solid fa-list-ol text-unlGreen"></i> Clases del Curso
+                            <i class="fa-solid fa-list-ol text-unlGreen"></i> Clases del taller
                         </h3>
                         <button id="btn-agregar-clase-en-curso" onclick="abrirModalNuevaClase(cursoActivoId)"
                             class="hidden text-xs bg-unlGold text-unlGreenDark font-bold px-2.5 py-1.5 rounded-lg hover:bg-yellow-400 transition">
@@ -271,14 +271,14 @@
         <div class="bg-white rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
             <div class="bg-unlGreen text-white px-6 py-4 flex justify-between items-center">
                 <h3 class="font-bold text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-folder-plus text-unlGold"></i> Crear Nuevo Curso
+                    <i class="fa-solid fa-folder-plus text-unlGold"></i> Crear Nuevo Taller
                 </h3>
                 <button onclick="cerrarModal('modal-crear-curso')" class="text-gray-200 hover:text-white text-2xl font-bold leading-none">&times;</button>
             </div>
 
             <form onsubmit="guardarNuevoCurso(event)" class="p-6 space-y-4 text-sm">
                 <div>
-                    <label class="block font-semibold text-gray-700 mb-1">Nombre del Curso</label>
+                    <label class="block font-semibold text-gray-700 mb-1">Nombre del Taller</label>
                     <input type="text" id="nuevo-curso-titulo" placeholder="Ej: Uso seguro de WhatsApp y correo electrónico" required
                         class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-unlGreen outline-none">
                 </div>
